@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — FundiConnect</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px; }
+    .auth-wrap {
+      display:grid; grid-template-columns:1fr 1fr; min-height:600px;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-xl); overflow:hidden;
+      width:100%; max-width:900px; box-shadow:var(--shadow-lg);
+    }
+    .auth-left {
+      background:linear-gradient(160deg,#0B1120 0%,#162032 50%,#0B1120 100%);
+      padding:56px 48px;
+      display:flex; flex-direction:column; justify-content:space-between;
+      position:relative; overflow:hidden;
+    }
+    .auth-left::before {
+      content:''; position:absolute; top:-60px; right:-80px;
+      width:300px; height:300px; border-radius:50%;
+      background:radial-gradient(circle,rgba(37,99,235,0.2),transparent 70%);
+    }
+    .auth-brand { position:relative; z-index:1; }
+    .auth-brand .nav-logo { font-size:1.2rem; margin-bottom:32px; }
+    .auth-features { position:relative; z-index:1; }
+    .auth-feature { display:flex; gap:14px; margin-bottom:24px; align-items:flex-start; }
+    .auth-feature-icon {
+      width:40px; height:40px; border-radius:10px;
+      background:var(--blue-glow); border:1px solid var(--border-blue);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.1rem; flex-shrink:0;
+    }
+    .auth-feature h4 { font-size:.9rem; margin-bottom:4px; }
+    .auth-feature p  { font-size:.8rem; }
+    .auth-right { padding:48px 44px; display:flex; flex-direction:column; justify-content:center; }
+    .auth-title { font-size:1.6rem; font-weight:800; margin-bottom:6px; }
+    .auth-sub   { font-size:.88rem; margin-bottom:32px; }
+    .auth-divider { display:flex; align-items:center; gap:12px; margin:20px 0; }
+    .auth-divider::before, .auth-divider::after { content:''; flex:1; height:1px; background:var(--border); }
+    .auth-divider span { font-size:.78rem; color:var(--text-muted); }
+    .role-tabs { display:flex; gap:8px; margin-bottom:24px; }
+    .role-tab {
+      flex:1; padding:10px; border:1.5px solid var(--border);
+      border-radius:var(--radius-sm); text-align:center;
+      font-size:.85rem; font-weight:600; cursor:pointer;
+      background:var(--bg-elevated); color:var(--text-secondary);
+      transition:all var(--transition);
+    }
+    .role-tab.active { border-color:var(--blue); background:var(--blue-glow); color:var(--blue-light); }
+    .remember-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+    .checkbox-label { display:flex; align-items:center; gap:8px; font-size:.85rem; cursor:pointer; }
+    .checkbox-label input { accent-color:var(--blue); }
+    @media(max-width:700px) {
+      .auth-wrap { grid-template-columns:1fr; }
+      .auth-left { display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-wrap">
+    <!-- Left Panel -->
+    <div class="auth-left">
+      <div class="auth-brand">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-icon">🔧</div> FundiConnect
+        </a>
+        <h2 style="font-size:1.5rem;line-height:1.35;color:var(--text-primary)">Welcome back to Kenya's Trusted Fundi Platform</h2>
+        <p style="font-size:.88rem;margin-top:12px">Book verified professionals, or manage your fundi career — all in one place.</p>
+      </div>
+      <div class="auth-features">
+        <div class="auth-feature">
+          <div class="auth-feature-icon">✅</div>
+          <div>
+            <h4>ID-Verified Fundis</h4>
+            <p>Every fundi is vetted before taking bookings</p>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">💳</div>
+          <div>
+            <h4>M-Pesa Payments</h4>
+            <p>Secure escrow payments, released on completion</p>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">🚨</div>
+          <div>
+            <h4>Emergency Mode</h4>
+            <p>Connect to nearest available fundi instantly</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="auth-right">
+      <div class="auth-title">Sign In</div>
+      <p class="auth-sub">New here? <a href="register.html" style="color:var(--blue-light)">Create a free account →</a></p>
+
+      <!-- Role selector -->
+      <div class="role-tabs">
+        <div class="role-tab active" onclick="setRole('client',this)">👤 Client</div>
+        <div class="role-tab" onclick="setRole('fundi',this)">🛠️ Fundi</div>
+        <div class="role-tab" onclick="setRole('admin',this)">🧑‍💼 Admin</div>
+      </div>
+
+      <form data-validate data-action="login">
+        <input type="hidden" name="role" id="role-input" value="client" />
+
+        <div class="form-group">
+          <label class="form-label">Phone / Email</label>
+          <div class="form-input-icon">
+            <span class="icon">📱</span>
+            <input class="form-input" type="text" name="email" placeholder="0712 345 678 or email@example.com" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="form-input-icon">
+            <span class="icon">🔒</span>
+            <input class="form-input" type="password" name="password" placeholder="Enter your password" required />
+          </div>
+        </div>
+
+        <div class="remember-row">
+          <label class="checkbox-label">
+            <input type="checkbox"> Remember me
+          </label>
+          <a href="#" style="font-size:.85rem;color:var(--blue-light)">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg">Sign In →</button>
+      </form>
+
+      <div class="auth-divider"><span>or continue with</span></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Google login coming soon','info')">
+          🌐 Google
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('OTP login coming soon','info')">
+          📱 OTP
+        </button>
+      </div>
+
+      <p style="font-size:.75rem;color:var(--text-muted);text-align:center;margin-top:24px">
+        By signing in you agree to our <a href="#" style="color:var(--text-secondary)">Terms</a> and <a href="#" style="color:var(--text-secondary)">Privacy Policy</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="toast-container"></div>
+  <script src="js/main.js"></script>
+  <script>
+    function setRole(role, el) {
+      document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('role-input').value = role;
+    }
+  </script>
+</body>
+</html>
