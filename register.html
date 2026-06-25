@@ -198,3 +198,172 @@
       <p style="margin-bottom:28px">This information helps clients trust you. All documents are reviewed by our team.</p>
 
       <div class="form-group">
+        <label class="form-label">Primary Skill / Trade *</label>
+        <select class="form-input" name="skill" required>
+          <option value="">Select your main skill</option>
+          <option>Electrician</option><option>Plumber</option>
+          <option>Carpenter</option><option>Painter</option>
+          <option>Welder</option><option>Tiler</option>
+          <option>Mason</option><option>AC Technician</option>
+          <option>Cleaner</option><option>Gardener</option>
+          <option>Roofing</option><option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Years of Experience *</label>
+          <select class="form-input" name="experience">
+            <option>1-2 years</option><option>3-5 years</option>
+            <option>6-10 years</option><option>10+ years</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Hourly Rate (Ksh) *</label>
+          <input class="form-input" type="number" name="rate" placeholder="e.g. 800" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">National ID Number *</label>
+        <input class="form-input" type="text" name="national_id" placeholder="e.g. 12345678" required />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Upload National ID (Front)</label>
+          <div class="upload-zone" onclick="document.getElementById('id-front').click()">
+            <div style="font-size:2rem;margin-bottom:8px">📄</div>
+            <p style="font-size:.85rem">Click to upload ID front</p>
+            <input type="file" id="id-front" accept="image/*" style="display:none" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Upload National ID (Back)</label>
+          <div class="upload-zone" onclick="document.getElementById('id-back').click()">
+            <div style="font-size:2rem;margin-bottom:8px">📄</div>
+            <p style="font-size:.85rem">Click to upload ID back</p>
+            <input type="file" id="id-back" accept="image/*" style="display:none" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Profile Photo</label>
+        <div class="upload-zone" onclick="document.getElementById('profile-photo').click()">
+          <div style="font-size:2rem;margin-bottom:8px">📷</div>
+          <p style="font-size:.85rem">Clear face photo. Clients will see this.</p>
+          <input type="file" id="profile-photo" accept="image/*" style="display:none" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Short Bio</label>
+        <textarea class="form-input" name="bio" placeholder="Tell clients about your experience and what makes you reliable..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-card" id="client-verify-pane">
+      <h2 style="margin-bottom:8px;font-size:1.4rem">Almost There!</h2>
+      <p style="margin-bottom:28px">Please verify your phone number with an OTP.</p>
+      <div class="form-group">
+        <label class="form-label">Enter OTP sent to your phone</label>
+        <div style="display:flex;gap:10px">
+          <input class="form-input" type="text" maxlength="1" style="text-align:center;font-size:1.4rem;font-weight:700;width:56px;padding:12px 0" />
+          <input class="form-input" type="text" maxlength="1" style="text-align:center;font-size:1.4rem;font-weight:700;width:56px;padding:12px 0" />
+          <input class="form-input" type="text" maxlength="1" style="text-align:center;font-size:1.4rem;font-weight:700;width:56px;padding:12px 0" />
+          <input class="form-input" type="text" maxlength="1" style="text-align:center;font-size:1.4rem;font-weight:700;width:56px;padding:12px 0" />
+          <input class="form-input" type="text" maxlength="1" style="text-align:center;font-size:1.4rem;font-weight:700;width:56px;padding:12px 0" />
+          <input class="form-input" type="text" maxlength="1" style="text-align:center;font-size:1.4rem;font-weight:700;width:56px;padding:12px 0" />
+        </div>
+        <div style="margin-top:10px;font-size:.82rem;color:var(--text-muted)">
+          Didn't receive code? <a href="#" style="color:var(--blue-light)" onclick="showToast('OTP resent!','info')">Resend OTP</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:24px;justify-content:space-between">
+      <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
+      <button class="btn btn-primary btn-lg" onclick="finishRegister()">Create Account →</button>
+    </div>
+  </div>
+
+  <!-- Step 4: Success -->
+  <div class="step-pane" id="pane-4">
+    <div class="form-card text-center" style="padding:64px 40px">
+      <div style="font-size:4rem;margin-bottom:24px">🎉</div>
+      <h2 style="margin-bottom:12px">Account Created!</h2>
+      <p id="success-msg" style="max-width:420px;margin:0 auto 32px;font-size:1rem">
+        Welcome to FundiConnect! You can now start booking fundis.
+      </p>
+      <div id="success-actions" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a href="dashboard-client.html" class="btn btn-primary btn-lg">Go to Dashboard →</a>
+        <a href="search.html" class="btn btn-outline btn-lg">Find a Fundi</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container"></div>
+<script src="js/main.js"></script>
+<script>
+  let currentRole = 'client';
+  let currentStep = 1;
+
+  function selectRole(role) {
+    currentRole = role;
+    document.getElementById('card-client').classList.toggle('active', role === 'client');
+    document.getElementById('card-fundi').classList.toggle('active', role === 'fundi');
+  }
+
+  function goStep(step) {
+    // Update panes
+    document.querySelectorAll('.step-pane').forEach(p => p.classList.remove('active'));
+    document.getElementById(`pane-${step}`).classList.add('active');
+
+    // Update step bar
+    for (let i = 1; i <= 4; i++) {
+      const num = document.getElementById(`step-num-${i}`);
+      const lbl = document.getElementById(`step-lbl-${i}`);
+      if (!num) continue;
+      num.classList.remove('active','done');
+      if (lbl) { lbl.classList.remove('active'); }
+      if (i < step)       { num.classList.add('done'); num.textContent = '✓'; }
+      else if (i === step) { num.classList.add('active'); if(lbl) lbl.classList.add('active'); }
+      else                 { num.textContent = i; }
+
+      const line = document.getElementById(`step-line-${i}`);
+      if (line) line.classList.toggle('done', i < step);
+    }
+
+    // Show correct step 3 content
+    if (step === 3) {
+      document.getElementById('fundi-verify-pane').style.display = currentRole === 'fundi' ? 'block' : 'none';
+      document.getElementById('client-verify-pane').style.display = currentRole === 'client' ? 'block' : 'none';
+    }
+
+    currentStep = step;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function finishRegister() {
+    showToast('Creating your account…', 'info');
+    setTimeout(() => {
+      if (currentRole === 'fundi') {
+        document.getElementById('success-msg').textContent = "Your profile is under review. We'll notify you within 24 hours. Meanwhile, complete your profile!";
+        document.getElementById('success-actions').innerHTML = `
+          <a href="dashboard-fundi.html" class="btn btn-primary btn-lg">Go to Fundi Dashboard →</a>`;
+      }
+      goStep(4);
+    }, 1200);
+  }
+
+  // Auto-advance OTP inputs
+  document.querySelectorAll('.step-pane input[maxlength="1"]').forEach((input, i, arr) => {
+    input.addEventListener('input', () => {
+      if (input.value && arr[i+1]) arr[i+1].focus();
+    });
+  });
+</script>
+</body>
+</html>
