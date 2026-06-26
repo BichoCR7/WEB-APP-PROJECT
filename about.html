@@ -97,3 +97,104 @@
 
     /* ── CTA ── */
     .cta-band {
+        background:linear-gradient(135deg,rgba(0,122,204,.15),rgba(78,201,176,.1));
+      border:1px solid var(--border-blue); border-radius:var(--radius-xl);
+      padding:60px 40px; text-align:center; margin:0 0 0;
+    }
+
+    .scroll-reveal { opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
+    .scroll-reveal.visible { opacity:1; transform:translateY(0); }
+
+    @media(max-width:768px) {
+      .mission-wrap { grid-template-columns:1fr; }
+      .mission-stat-grid { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div style="width:32px;height:32px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center">🔧</div>
+      FundiConnect
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="search.html">Find Fundi</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="login.html" class="nav-cta">Get Started</a></li>
+    </ul>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="page-hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content fade-up">
+    <div class="hero-chip">🇰🇪 Made for Kenya</div>
+    <h1 class="hero-title">We're Building Kenya's Most <span>Trusted</span> Fundi Platform</h1>
+    <p class="hero-sub">FundiConnect was born from a simple frustration — finding a reliable, fairly-priced tradesperson in Kenya was too hard. We're fixing that.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="search.html" class="btn btn-primary">🔍 Find a Fundi</a>
+      <a href="register.html" class="btn btn-outline">🛠️ Join as Fundi</a>
+    </div>
+  </div>
+</section>
+
+<!-- Mission -->
+<section style="padding:80px 0">
+  <div class="container">
+    <div class="mission-wrap">
+      <div class="scroll-reveal">
+        <div class="section-label">🎯 Our Mission</div>
+        <h2 style="margin-bottom:20px">Making Trust the Default,<br/>Not the Exception</h2>
+        <p style="margin-bottom:16px">Every day, Kenyans waste hours chasing unreliable fundis, overpaying, or getting poor-quality work with no recourse. We believe every homeowner deserves access to a skilled, verified professional — and every hardworking fundi deserves a fair platform to grow their business.</p>
+        <p style="margin-bottom:24px">FundiConnect creates accountability on both sides: fundis earn verified badges and build real reputations, while clients get escrow-backed payments and guaranteed quality.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div class="section-label" style="margin:0">✅ ID-Verified Fundis</div>
+          <div class="section-label" style="margin:0">💳 Escrow Payments</div>
+          <div class="section-label" style="margin:0">⭐ Honest Reviews</div>
+        </div>
+      </div>
+
+      <div class="mission-visual scroll-reveal">
+        <div class="mission-stat-grid">
+          <div class="m-stat"><div class="val">2,847</div><div class="lbl">Registered Users</div></div>
+          <div class="m-stat"><div class="val">384</div><div class="lbl">Verified Fundis</div></div>
+          <div class="m-stat"><div class="val">1,256</div><div class="lbl">Jobs Completed</div></div>
+          <div class="m-stat"><div class="val">4.7⭐</div><div class="lbl">Average Rating</div></div>
+          <div class="m-stat"><div class="val">18</div><div class="lbl">Counties Covered</div></div>
+          <div class="m-stat"><div class="val">Ksh 842k</div><div class="lbl">Paid to Fundis</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Values -->
+<section style="padding:80px 0;background:var(--bg-panel);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:56px">
+      <div class="section-label">💡 Our Values</div>
+      <h2>What We Stand For</h2>
+    </div>
+    <div class="grid-3">
+      <div class="value-card scroll-reveal">
+        <div class="value-icon" style="background:rgba(0,122,204,.15)">🛡️</div>
+        <h3>Trust First</h3>
+        <p>Every fundi is ID-verified before they can take a single booking. No exceptions. No shortcuts.</p>
+      </div>
+      <div class="value-card scroll-reveal">
+        <div class="value-icon" style="background:rgba(78,201,176,.15)">⚖️</div>
+        <h3>Fair to Both Sides</h3>
+        <p>Clients are protected by escrow. Fundis are protected by fair pay policies. We don't take sides — we build systems that work for everyone.</p>
+      </div>
+      <div class="value-card scroll-reveal">
+        <div class="value-icon" style="background:rgba(197,134,192,.15)">🚀</div>
+        <h3>Fundi Empowerment</h3>
+        <p>We help skilled tradespeople build real businesses — profiles, reviews, consistent income, and career growth through our ranking system.</p>
