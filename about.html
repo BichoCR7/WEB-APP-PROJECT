@@ -298,3 +298,47 @@
           </div>
         </div>
       </div>
+       </div>
+  </div>
+</section>
+
+<!-- CTA Band -->
+<section style="padding:0 0 80px">
+  <div class="container">
+    <div class="cta-band scroll-reveal">
+      <div class="section-label">🚀 Join Us</div>
+      <h2 style="margin-bottom:16px">Be Part of Kenya's Fundi Revolution</h2>
+      <p style="max-width:500px;margin:0 auto 32px">Whether you need a job done or you're a skilled fundi ready to grow — FundiConnect is your home.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a href="register.html" class="btn btn-primary" style="font-size:1rem;padding:14px 32px">👤 Register as Client</a>
+        <a href="register.html" class="btn btn-outline" style="font-size:1rem;padding:14px 32px">🛠️ Join as Fundi</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 FundiConnect Kenya. All rights reserved.</span>
+      <div style="display:flex;gap:20px">
+        <a href="privacy.html" style="color:var(--text-muted);font-size:.83rem">Privacy Policy</a>
+        <a href="terms.html" style="color:var(--text-muted);font-size:.83rem">Terms of Use</a>
+        <a href="support.html" style="color:var(--text-muted);font-size:.83rem">Support</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container"></div>
+<script src="js/main.js"></script>
+<script src="js/ai-assistant.js"></script>
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin:'0px 0px -40px 0px' });
+  document.querySelectorAll('.scroll-reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
