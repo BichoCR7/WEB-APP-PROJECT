@@ -597,3 +597,101 @@ window.adminUnbanUser = function(id, btn) {
   }
   showToast('User unbanned ✅', 'success');
 };
+
+/* ══════════════════════════════════════════════
+   ADMIN — DYNAMIC FUNDI APPROVAL QUEUE
+   Registered fundis (status=pending) appear here
+══════════════════════════════════════════════ */
+function initAdminFundiQueue() {
+  const queue = document.getElementById('registered-fundi-queue');
+  if (!queue) return;
+
+  function renderQueue() {
+    const pending = FC.getPendingFundis();
+    if (!pending.length) return;
+
+    /* Update the pending badge count */
+    const badges = document.querySelectorAll('.pending-count-badge');
+    badges.forEach(b => {
+      const base = parseInt(b.dataset.base || '3');
+      b.textContent = base + pending.length;
+    });
+
+    pending.forEach((u, idx) => {
+      if (document.getElementById(`fq-${u.id}`)) return; // no duplicates
+
+      const grad = FC.avatarGradient(idx + 3);
+      const card = document.createElement('div');
+      card.className = 'approval-card';
+      card.id = `fq-${u.id}`;
+      card.innerHTML = `
+        <div class="appr-avatar" style="background:${grad}">${u.initials}</div>
+        <div class="appr-meta" style="flex:1">
+          <h4>${u.name} <span style="font-size:.7rem;color:var(--amber);font-weight:600;margin-left:4px">NEW ✨</span></h4>
+          <p>📍 ${u.location || 'Kenya'} &nbsp;|&nbsp; 📱 ${u.phone || '—'}</p>
+          ${u.skill ? `<div class="appr-tags"><span class="appr-tag">🔧 ${u.skill}</span></div>` : ''}
+          <div style="font-size:.72rem;color:var(--text-muted);margin-top:4px">
+            Registered: ${FC.formatDate(u.joinDate)} &nbsp;·&nbsp; ${u.email || ''}
+          </div>
+        </div>
+        <div class="action-btns" style="flex-direction:column;gap:8px">
+          <button class="act act-approve" onclick="adminApproveFundi(${u.id},'${u.name}',this)">✅ Approve</button>
+          <button class="act act-reject"  onclick="adminRejectFundi(${u.id},'${u.name}',this)">❌ Reject</button>
+        </div>`;
+      queue.appendChild(card);
+    });
+  }
+
+  renderQueue();
+}
+
+/* Admin: approve a fundi */
+window.adminApproveFundi = function(id, name, btn) {
+  FC.updateUserStatus(id, 'active');
+  const card = document.getElementById(`fq-${id}`);
+  if (card) { card.style.opacity = '0.4'; card.style.transition = 'opacity .3s'; setTimeout(() => card.remove(), 350); }
+  showToast(`${name} approved as fundi ✅`, 'success');
+  _decrementPendingBadge();
+};
+
+/* Admin: reject a fundi */
+window.adminRejectFundi = function(id, name, btn) {
+  FC.deleteUser(id);
+  const card = document.getElementById(`fq-${id}`);
+  if (card) { card.style.opacity = '0.4'; card.style.transition = 'opacity .3s'; setTimeout(() => card.remove(), 350); }
+  showToast(`${name}'s application rejected`, 'error');
+  _decrementPendingBadge();
+};
+
+function _decrementPendingBadge() {
+  document.querySelectorAll('.pending-count-badge').forEach(b => {
+    const n = Math.max(0, parseInt(b.textContent) - 1);
+    b.textContent = n;
+  });
+}
+
+/* Expose FC globally so admin.html inline scripts can use it */
+window.FC = FC;
+
+/* ══════════════════════════════════════════════
+   INIT ALL
+══════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  initScrollReveal();
+  initCounters();
+  initNav();
+  initTabs();
+  initModals();
+  initStarRating();
+  initChat();
+  initSearch();
+  initForms();
+  initUploadPreviews();
+  initSparklines();
+  initBookingActions();
+  initEmergency();
+  initProgressBars();
+  initNotifications();
+  initAdminUserTable();
+  initAdminFundiQueue();
+});
