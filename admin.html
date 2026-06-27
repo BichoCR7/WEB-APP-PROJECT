@@ -286,3 +286,311 @@
     </div>
   </div>
 </aside>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main class="admin-main">
+
+  <!-- Top Bar -->
+  <div class="admin-topbar">
+    <div class="topbar-title">
+      <h1 id="page-title">Dashboard</h1>
+      <p id="page-sub">Welcome back, Admin. Here's what's happening today.</p>
+    </div>
+    <div class="topbar-actions" style="position:relative">
+      <div class="notif-btn" id="notif-btn">🔔 <div class="notif-dot"></div></div>
+      <div class="notif-panel" id="notif-panel">
+        <div class="notif-panel-header">
+          <strong style="font-size:.85rem">Notifications</strong>
+          <a href="#" style="font-size:.78rem;color:var(--blue-light)">Mark all read</a>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon" style="background:rgba(78,201,176,.15)">✅</div>
+          <div class="notif-text"><p>New fundi awaiting approval</p><small>Peter Mutua — Electrician · 5 min ago</small></div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon" style="background:rgba(248,81,73,.15)">⚠️</div>
+          <div class="notif-text"><p>Dispute raised on Booking #2341</p><small>Client vs Fundi · 18 min ago</small></div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon" style="background:rgba(0,122,204,.15)">💳</div>
+          <div class="notif-text"><p>M-Pesa payout processed — Ksh 4,500</p><small>John Kamau · 1 hr ago</small></div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon" style="background:rgba(197,134,192,.15)">🌟</div>
+          <div class="notif-text"><p>50 new users registered today</p><small>Platform milestone · 2 hr ago</small></div>
+        </div>
+      </div>
+      <a href="index.html" class="btn btn-outline" style="padding:8px 16px;font-size:.83rem">🌐 View Site</a>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: DASHBOARD ══ -->
+  <div class="page active" id="page-dashboard">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card" style="--accent-color:var(--blue)">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value" data-count="2847" data-suffix="">0</div>
+        <div class="stat-label">Total Users</div>
+        <div class="stat-trend trend-up">↑ 12% vs last month</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--green)">
+        <div class="stat-icon">🛠️</div>
+        <div class="stat-value" data-count="384" data-suffix="">0</div>
+        <div class="stat-label">Verified Fundis</div>
+        <div class="stat-trend trend-up">↑ 8% vs last month</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--amber)">
+        <div class="stat-icon">📅</div>
+        <div class="stat-value" data-count="1256" data-suffix="">0</div>
+        <div class="stat-label">Total Bookings</div>
+        <div class="stat-trend trend-up">↑ 24% vs last month</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--purple)">
+        <div class="stat-icon">💰</div>
+        <div class="stat-value">Ksh <span data-count="842000" data-suffix="">0</span></div>
+        <div class="stat-label">Revenue This Month</div>
+        <div class="stat-trend trend-up">↑ 18% vs last month</div>
+      </div>
+    </div>
+
+    <!-- Panels row 1 -->
+    <div class="admin-grid">
+      <!-- Revenue Chart -->
+      <div class="admin-panel">
+        <div class="panel-header">
+          <h3>📈 Monthly Revenue</h3>
+          <select class="filter-select" style="font-size:.75rem;padding:4px 8px">
+            <option>2025</option><option>2024</option>
+          </select>
+        </div>
+        <div class="panel-body">
+          <div style="font-size:1.6rem;font-weight:800;font-family:'JetBrains Mono',monospace;margin-bottom:4px">Ksh 842,000</div>
+          <p style="font-size:.78rem;color:var(--green);margin-bottom:16px">↑ 18% from last month</p>
+          <div class="chart-bar-wrap" id="rev-chart"></div>
+          <div class="chart-label">
+            <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+            <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+            <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service breakdown -->
+      <div class="admin-panel">
+        <div class="panel-header"><h3>🔧 Bookings by Service</h3></div>
+        <div class="panel-body">
+          <div class="donut-wrap">
+            <svg class="donut-svg" width="120" height="120" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="45" fill="none" stroke="var(--bg-elevated)" stroke-width="18"/>
+              <circle cx="60" cy="60" r="45" fill="none" stroke="var(--blue)" stroke-width="18" stroke-dasharray="100 183" stroke-dashoffset="0" stroke-linecap="round"/>
+              <circle cx="60" cy="60" r="45" fill="none" stroke="var(--green)" stroke-width="18" stroke-dasharray="60 183" stroke-dashoffset="-103" stroke-linecap="round"/>
+              <circle cx="60" cy="60" r="45" fill="none" stroke="var(--purple)" stroke-width="18" stroke-dasharray="40 183" stroke-dashoffset="-163" stroke-linecap="round"/>
+              <circle cx="60" cy="60" r="45" fill="none" stroke="var(--amber)" stroke-width="18" stroke-dasharray="25 183" stroke-dashoffset="-203" stroke-linecap="round"/>
+              <text x="60" y="65" text-anchor="middle" fill="var(--text-primary)" font-size="12" font-weight="700">1,256</text>
+            </svg>
+            <div class="donut-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> Electrical — 34%</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Plumbing — 24%</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div> Carpentry — 18%</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div> Painting — 14%</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--text-muted)"></div> Other — 10%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panels row 2 -->
+    <div class="admin-grid">
+      <!-- Recent Bookings -->
+      <div class="admin-panel panel-full">
+        <div class="panel-header">
+          <h3>📅 Recent Bookings</h3>
+          <a href="#" onclick="navigate('bookings',null)" style="font-size:.8rem;color:var(--blue-light)">View all →</a>
+        </div>
+        <div class="panel-body" style="padding:0">
+          <table class="data-table">
+            <thead>
+              <tr><th>Client</th><th>Fundi</th><th>Service</th><th>Date</th><th>Amount</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="user-row"><div class="ua" style="background:linear-gradient(135deg,#007ACC,#0EA5E9);color:#fff">A</div><div><div style="font-size:.83rem;font-weight:600">Amina Wanjiku</div><div style="font-size:.72rem;color:var(--text-muted)">Nairobi</div></div></div></td>
+                <td><div style="font-size:.83rem">John Kamau</div><div style="font-size:.72rem;color:var(--text-muted)">Electrician ⭐4.9</div></td>
+                <td><span class="badge badge-blue">Electrical</span></td>
+                <td style="font-size:.8rem">2 May 2025</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:.83rem">Ksh 3,500</td>
+                <td><span class="status status-completed">Completed</span></td>
+              </tr>
+              <tr>
+                <td><div class="user-row"><div class="ua" style="background:linear-gradient(135deg,#4EC9B0,#0ea5e9);color:#fff">B</div><div><div style="font-size:.83rem;font-weight:600">Brian Ochieng</div><div style="font-size:.72rem;color:var(--text-muted)">Kisumu</div></div></div></td>
+                <td><div style="font-size:.83rem">Mary Njeri</div><div style="font-size:.72rem;color:var(--text-muted)">Plumber ⭐4.7</div></td>
+                <td><span class="badge badge-green">Plumbing</span></td>
+                <td style="font-size:.8rem">3 May 2025</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:.83rem">Ksh 2,000</td>
+                <td><span class="status status-active">In Progress</span></td>
+              </tr>
+              <tr>
+                <td><div class="user-row"><div class="ua" style="background:linear-gradient(135deg,#C586C0,#CE9178);color:#fff">F</div><div><div style="font-size:.83rem;font-weight:600">Fatuma Hassan</div><div style="font-size:.72rem;color:var(--text-muted)">Mombasa</div></div></div></td>
+                <td><div style="font-size:.83rem">Kiptoo Kibet</div><div style="font-size:.72rem;color:var(--text-muted)">Carpenter ⭐4.8</div></td>
+                <td><span class="badge badge-purple">Carpentry</span></td>
+                <td style="font-size:.8rem">4 May 2025</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:.83rem">Ksh 7,500</td>
+                <td><span class="status status-pending">Pending</span></td>
+              </tr>
+              <tr>
+                <td><div class="user-row"><div class="ua" style="background:linear-gradient(135deg,#E3B341,#CE9178);color:#fff">D</div><div><div style="font-size:.83rem;font-weight:600">Daniel Mwangi</div><div style="font-size:.72rem;color:var(--text-muted)">Thika</div></div></div></td>
+                <td><div style="font-size:.83rem">Grace Atieno</div><div style="font-size:.72rem;color:var(--text-muted)">Painter ⭐4.6</div></td>
+                <td><span class="badge badge-orange">Painting</span></td>
+                <td style="font-size:.8rem">4 May 2025</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:.83rem">Ksh 4,200</td>
+                <td><span class="status status-dispute">Dispute</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div><!-- /dashboard -->
+
+  <!-- ══ PAGE: FUNDI APPROVALS ══ -->
+  <div class="page" id="page-fundis">
+    <div class="tab-row" data-tabs="fundis-tabs">
+      <button class="tab-btn active" data-tab="pending">⏳ Pending (3)</button>
+      <button class="tab-btn" data-tab="approved">✅ Approved</button>
+      <button class="tab-btn" data-tab="rejected">❌ Rejected</button>
+    </div>
+
+    <div class="tab-pane active" data-tab-pane="pending">
+      <div id="approval-queue">
+        <!-- Card 1 -->
+        <div class="approval-card" id="appr-1">
+          <div class="appr-avatar">P</div>
+          <div class="appr-meta" style="flex:1">
+            <h4>Peter Mutua</h4>
+            <p>📍 Nairobi, Westlands &nbsp;|&nbsp; 📱 0712 345 678</p>
+            <div class="appr-tags">
+              <span class="appr-tag">⚡ Electrician</span>
+              <span class="appr-tag">5 yrs exp</span>
+            </div>
+            <div class="doc-links">
+              <span class="doc-link" onclick="showToast('Viewing National ID…','info')">🪪 National ID</span>
+              <span class="doc-link" onclick="showToast('Viewing Certificate…','info')">📜 Certificate</span>
+              <span class="doc-link" onclick="showToast('Viewing Portfolio…','info')">📸 Portfolio (3)</span>
+            </div>
+          </div>
+          <div class="action-btns" style="flex-direction:column;gap:8px">
+            <button class="act act-approve" onclick="approveCard('appr-1','Peter Mutua')">✅ Approve</button>
+            <button class="act act-reject" onclick="rejectCard('appr-1','Peter Mutua')">❌ Reject</button>
+            <button class="act act-view" onclick="window.open('fundi-profile.html')">👁 View</button>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="approval-card" id="appr-2">
+          <div class="appr-avatar" style="background:linear-gradient(135deg,#4EC9B0,#007ACC)">N</div>
+          <div class="appr-meta" style="flex:1">
+            <h4>Nancy Wanjiru</h4>
+            <p>📍 Thika, Kiandutu &nbsp;|&nbsp; 📱 0722 987 654</p>
+            <div class="appr-tags">
+              <span class="appr-tag">🔧 Plumber</span>
+              <span class="appr-tag">3 yrs exp</span>
+            </div>
+            <div class="doc-links">
+              <span class="doc-link" onclick="showToast('Viewing National ID…','info')">🪪 National ID</span>
+              <span class="doc-link" onclick="showToast('Viewing Certificate…','info')">📜 Certificate</span>
+            </div>
+          </div>
+          <div class="action-btns" style="flex-direction:column;gap:8px">
+            <button class="act act-approve" onclick="approveCard('appr-2','Nancy Wanjiru')">✅ Approve</button>
+            <button class="act act-reject" onclick="rejectCard('appr-2','Nancy Wanjiru')">❌ Reject</button>
+            <button class="act act-view">👁 View</button>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="approval-card" id="appr-3">
+          <div class="appr-avatar" style="background:linear-gradient(135deg,#C586C0,#CE9178)">S</div>
+          <div class="appr-meta" style="flex:1">
+            <h4>Samuel Kiprotich</h4>
+            <p>📍 Eldoret, Langas &nbsp;|&nbsp; 📱 0733 111 222</p>
+            <div class="appr-tags">
+              <span class="appr-tag">🪚 Carpenter</span>
+              <span class="appr-tag">8 yrs exp</span>
+            </div>
+            <div class="doc-links">
+              <span class="doc-link" onclick="showToast('Viewing National ID…','info')">🪪 National ID</span>
+              <span class="doc-link" onclick="showToast('Viewing Portfolio…','info')">📸 Portfolio (7)</span>
+            </div>
+          </div>
+          <div class="action-btns" style="flex-direction:column;gap:8px">
+            <button class="act act-approve" onclick="approveCard('appr-3','Samuel Kiprotich')">✅ Approve</button>
+            <button class="act act-reject" onclick="rejectCard('appr-3','Samuel Kiprotich')">❌ Reject</button>
+            <button class="act act-view">👁 View</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane" data-tab-pane="approved">
+      <table class="data-table">
+        <thead><tr><th>Fundi</th><th>Service</th><th>Location</th><th>Rating</th><th>Bookings</th><th>Joined</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="user-row"><div class="ua" style="background:linear-gradient(135deg,#007ACC,#4EC9B0);color:#fff">J</div><div><div style="font-size:.83rem;font-weight:600">John Kamau</div><div style="font-size:.72rem;color:var(--text-muted)">john@email.com</div></div></div></td>
+            <td><span class="badge badge-blue">Electrician</span></td>
+            <td style="font-size:.8rem">Nairobi</td>
+            <td style="font-size:.83rem">⭐ 4.9</td>
+            <td style="font-family:'JetBrains Mono',monospace;font-size:.8rem">142</td>
+            <td style="font-size:.78rem;color:var(--text-muted)">Jan 2025</td>
+            <td><div class="action-btns"><button class="act act-view">👁 View</button><button class="act act-ban" onclick="showToast('User banned','error')">🚫 Ban</button></div></td>
+          </tr>
+          <tr>
+            <td><div class="user-row"><div class="ua" style="background:linear-gradient(135deg,#4EC9B0,#0ea5e9);color:#fff">M</div><div><div style="font-size:.83rem;font-weight:600">Mary Njeri</div><div style="font-size:.72rem;color:var(--text-muted)">mary@email.com</div></div></div></td>
+            <td><span class="badge badge-green">Plumber</span></td>
+            <td style="font-size:.8rem">Kisumu</td>
+            <td style="font-size:.83rem">⭐ 4.7</td>
+            <td style="font-family:'JetBrains Mono',monospace;font-size:.8rem">89</td>
+            <td style="font-size:.78rem;color:var(--text-muted)">Feb 2025</td>
+            <td><div class="action-btns"><button class="act act-view">👁 View</button><button class="act act-ban" onclick="showToast('User banned','error')">🚫 Ban</button></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-pane" data-tab-pane="rejected">
+      <div style="text-align:center;padding:40px;color:var(--text-muted)">
+        <div style="font-size:3rem;margin-bottom:12px">📭</div>
+        <p>No rejected applications this period.</p>
+      </div>
+    </div>
+  </div><!-- /fundis -->
+
+  <!-- ══ PAGE: USERS ══ -->
+  <div class="page" id="page-users">
+    <div class="filter-row">
+      <input class="filter-search" placeholder="🔍 Search users by name, phone or email…" id="user-search" oninput="filterUsers(this.value)"/>
+      <select class="filter-select" onchange="filterUsers()">
+        <option>All Roles</option><option>Client</option><option>Fundi</option>
+      </select>
+      <select class="filter-select">
+        <option>All Status</option><option>Active</option><option>Banned</option>
+      </select>
+    </div>
+    <div class="admin-panel">
+      <div class="panel-header"><h3>👥 All Users</h3><span style="font-size:.8rem;color:var(--text-muted)">2,847 total</span></div>
+      <div style="overflow-x:auto">
+        <table class="data-table" id="users-table">
+          <thead><tr><th>User</th><th>Role</th><th>Phone</th><th>Location</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="user-row"><div class="ua" style="background:linear-gradient(135deg,#007ACC,#0ea5e9);color:#fff">A</div><div><div style="font-size:.83rem;font-weight:600">Amina Wanjiku</div><div style="font-size:.72rem;color:var(--text-muted)">amina@email.com</div></div></div></td><td><span class="badge badge-blue">Client</span></td><td style="font-size:.8rem;font-family:'JetBrains Mono',monospace">0712 345 678</td><td style="font-size:.8rem">Nairobi</td><td style="font-size:.78rem;color:var(--text-muted)">10 Jan 2025</td><td><span class="status status-active">Active</span></td><td><div class="action-btns"><button class="act act-view">👁</button><button class="act act-ban" onclick="showToast('User banned','error')">🚫</button></div></td></tr>
+            <tr><td><div class="user-row"><div class="ua" style="background:linear-gradient(135deg,#4EC9B0,#007ACC);color:#fff">B</div><div><div style="font-size:.83rem;font-weight:600">Brian Ochieng</div><div style="font-size:.72rem;color:var(--text-muted)">brian@email.com</div></div></div></td><td><span class="badge badge-blue">Client</span></td><td style="font-size:.8rem;font-family:'JetBrains Mono',monospace">0722 111 222</td><td style="font-size:.8rem">Kisumu</td><td style="font-size:.78rem;color:var(--text-muted)">15 Jan 2025</td><td><span class="status status-active">Active</span></td><td><div class="action-btns"><button class="act act-view">👁</button><button class="act act-ban" onclick="showToast('User banned','error')">🚫</button></div></td></tr>
+            <tr><td><div class="user-row"><div class="ua" style="background:linear-gradient(135deg,#C586C0,#CE9178);color:#fff">J</div><div><div style="font-size:.83rem;font-weight:600">John Kamau</div><div style="font-size:.72rem;color:var(--text-muted)">john@email.com</div></div></div></td><td><span class="badge badge-green">Fundi</span></td><td style="font-size:.8rem;font-family:'JetBrains Mono',monospace">0733 987 654</td><td style="font-size:.8rem">Nairobi</td><td style="font-size:.78rem;color:var(--text-muted)">5 Jan 2025</td><td><span class="status status-approved">Verified</span></td><td><div class="action-btns"><button class="act act-view">👁</button><button class="act act-ban" onclick="showToast('User banned','error')">🚫</button></div></td></tr>
+            <tr><td><div class="user-row"><div class="ua" style="background:linear-gradient(135deg,#E3B341,#CE9178);color:#fff">F</div><div><div style="font-size:.83rem;font-weight:600">Fatuma Hassan</div><div style="font-size:.72rem;color:var(--text-muted)">fatuma@email.com</div></div></div></td><td><span class="badge badge-blue">Client</span></td><td style="font-size:.8rem;font-family:'JetBrains Mono',monospace">0700 555 444</td><td style="font-size:.8rem">Mombasa</td><td style="font-size:.78rem;color:var(--text-muted)">20 Feb 2025</td><td><span class="status status-banned">Banned</span></td><td><div class="action-btns"><button class="act act-approve" onclick="showToast('User unbanned','success')">✅ Unban</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div><!-- /users -->
