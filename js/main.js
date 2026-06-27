@@ -298,3 +298,302 @@ function initSearch() {
     });
   });
 }
+
+/* ══════════════════════════════════════════════
+   FORM VALIDATION + REGISTRATION FLOW
+══════════════════════════════════════════════ */
+function initForms() {
+  document.querySelectorAll('form[data-validate]').forEach(form => {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      let valid = true;
+      form.querySelectorAll('[required]').forEach(field => {
+        if (!field.value.trim()) {
+          field.style.borderColor = '#F85149';
+          valid = false;
+          setTimeout(() => field.style.borderColor = '', 2000);
+        }
+      });
+      if (!valid) { showToast('Please fill all required fields', 'error'); return; }
+
+      const action = form.dataset.action;
+      if      (action === 'login')    doLogin(form);
+      else if (action === 'register') doRegister(form);
+      else if (action === 'book')     doBooking(form);
+      else showToast('Submitted successfully!', 'success');
+    });
+  });
+}
+
+/* ── Login ── */
+function doLogin(form) {
+  showToast('Logging you in…', 'info');
+  setTimeout(() => {
+    const role = form.querySelector('[name="role"]')?.value || 'client';
+    window.location.href = role === 'fundi'
+      ? 'dashboard-fundi.html'
+      : role === 'admin'
+        ? 'admin.html'
+        : 'dashboard-client.html';
+  }, 1000);
+}
+
+/* ── Register — NOW SAVES TO LOCALSTORAGE ── */
+function doRegister(form) {
+  showToast('Creating your account…', 'info');
+
+  /* Collect every named field in the form */
+  const get = (name) => form.querySelector(`[name="${name}"]`)?.value?.trim() || '';
+
+  const role     = get('role') || 'client';
+  const fullName = get('name') || get('fullname') || get('full_name') || 'New User';
+  const phone    = get('phone');
+  const email    = get('email');
+  const location = get('location') || get('county') || 'Kenya';
+  const skill    = get('skill') || get('service') || get('skills') || '';
+  const password = get('password');  // stored only as a marker (never in plaintext in production)
+
+  /* Build the user record */
+  const user = {
+    id:       Date.now(),                          // unique ID
+    name:     fullName,
+    initials: FC.initials(fullName),
+    email:    email,
+    phone:    phone,
+    role:     role,                                // 'client' | 'fundi'
+    location: location,
+    skill:    skill,                               // relevant for fundis
+    status:   role === 'fundi' ? 'pending' : 'active', // fundis start as pending until admin approves
+    joinDate: new Date().toISOString(),
+    rating:   null,
+    bookings: 0,
+  };
+
+  /* Persist to localStorage */
+  FC.saveUser(user);
+
+  /* Confirm and redirect */
+  setTimeout(() => {
+    showToast(`Account created! Welcome to FundiConnect 🎉`, 'success');
+    setTimeout(() => {
+      window.location.href = role === 'fundi'
+        ? 'dashboard-fundi.html'
+        : 'dashboard-client.html';
+    }, 1200);
+  }, 1000);
+}
+
+/* ── Booking ── */
+function doBooking(form) {
+  showToast('Booking request sent! ✅', 'success');
+  setTimeout(() => window.location.href = 'dashboard-client.html', 1500);
+}
+
+/* ══════════════════════════════════════════════
+   UPLOAD PREVIEW
+══════════════════════════════════════════════ */
+function initUploadPreviews() {
+  document.querySelectorAll('input[type="file"][data-preview]').forEach(input => {
+    input.addEventListener('change', () => {
+      const preview = document.getElementById(input.dataset.preview);
+      if (!preview) return;
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
+      reader.readAsDataURL(file);
+    });
+  });
+}
+
+/* ══════════════════════════════════════════════
+   SPARKLINES
+══════════════════════════════════════════════ */
+function initSparklines() {
+  document.querySelectorAll('.sparkline').forEach(el => {
+    const data = el.dataset.values?.split(',').map(Number) || [];
+    if (!data.length) return;
+    const max = Math.max(...data), min = Math.min(...data);
+    const w = el.offsetWidth || 120, h = 40;
+    const points = data.map((v, i) => {
+      const x = (i / (data.length - 1)) * w;
+      const y = h - ((v - min) / (max - min || 1)) * (h - 6) - 3;
+      return `${x},${y}`;
+    }).join(' ');
+    el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" style="width:100%;height:40px">
+      <polyline points="${points}" fill="none" stroke="var(--blue-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  });
+}
+
+/* ══════════════════════════════════════════════
+   BOOKING STATUS ACTIONS
+══════════════════════════════════════════════ */
+function initBookingActions() {
+  document.querySelectorAll('[data-accept-job]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.job-card');
+      if (card) {
+        card.querySelector('.job-status')?.replaceWith(createBadge('Accepted', 'green'));
+        btn.remove();
+        showToast('Job accepted! Client has been notified.', 'success');
+      }
+    });
+  });
+  document.querySelectorAll('[data-reject-job]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.job-card')?.remove();
+      showToast('Job declined.', 'info');
+    });
+  });
+  document.querySelectorAll('[data-complete-job]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.job-card');
+      if (card) {
+        card.querySelector('.job-status')?.replaceWith(createBadge('Completed', 'green'));
+        btn.remove();
+        showToast('Job marked as complete! 🎉', 'success');
+      }
+    });
+  });
+}
+
+function createBadge(text, type) {
+  const span = document.createElement('span');
+  span.className = `badge badge-${type}`;
+  span.textContent = text;
+  return span;
+}
+
+/* ══════════════════════════════════════════════
+   EMERGENCY MODE
+══════════════════════════════════════════════ */
+function initEmergency() {
+  const btn = document.querySelector('#emergency-btn');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    btn.textContent = '🔍 Finding nearest fundi…';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = '📞 Connecting to John Kamau (2.3km away)';
+      showToast('Emergency request sent! Fundi is on the way 🚨', 'error');
+      btn.style.background = 'var(--green)';
+      btn.disabled = false;
+    }, 2000);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   PROGRESS BARS
+══════════════════════════════════════════════ */
+function initProgressBars() {
+  document.querySelectorAll('.progress-fill[data-width]').forEach(el => {
+    setTimeout(() => el.style.width = el.dataset.width, 300);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   NOTIFICATIONS PANEL
+══════════════════════════════════════════════ */
+function initNotifications() {
+  const btn   = document.querySelector('#notif-btn');
+  const panel = document.querySelector('#notif-panel');
+  if (!btn || !panel) return;
+  btn.addEventListener('click', e => { e.stopPropagation(); panel.classList.toggle('open'); });
+  document.addEventListener('click', e => {
+    if (!panel.contains(e.target) && e.target !== btn) panel.classList.remove('open');
+  });
+}
+
+/* ══════════════════════════════════════════════
+   ADMIN — DYNAMIC USER TABLE
+   Reads localStorage and injects registered users
+   into the admin users table and fundi queues.
+══════════════════════════════════════════════ */
+function initAdminUserTable() {
+  const tbody = document.getElementById('registered-users-tbody');
+  if (!tbody) return;
+
+  function renderUsers() {
+    const registeredUsers = FC.getUsers();
+    if (!registeredUsers.length) return;
+
+    registeredUsers.forEach((u, idx) => {
+      /* Skip if this user row already exists (avoid duplicates on re-render) */
+      if (document.getElementById(`ru-${u.id}`)) return;
+
+      const grad = FC.avatarGradient(idx);
+      const dateStr = FC.formatDate(u.joinDate);
+      const statusClass = u.status === 'active' ? 'status-active'
+                        : u.status === 'pending'  ? 'status-pending'
+                        : 'status-banned';
+      const statusLabel = u.status === 'active'  ? 'Active'
+                        : u.status === 'pending'  ? 'Pending'
+                        : u.status === 'banned'   ? 'Banned'
+                        : u.status;
+      const roleClass = u.role === 'fundi' ? 'badge-green' : 'badge-blue';
+      const roleLabel = u.role === 'fundi' ? 'Fundi' : 'Client';
+
+      const tr = document.createElement('tr');
+      tr.id = `ru-${u.id}`;
+      tr.innerHTML = `
+        <td>
+          <div class="user-row">
+            <div class="ua" style="background:${grad};color:#fff">${u.initials}</div>
+            <div>
+              <div style="font-size:.83rem;font-weight:600">${u.name}</div>
+              <div style="font-size:.72rem;color:var(--text-muted)">${u.email || '—'}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="badge ${roleClass}">${roleLabel}</span></td>
+        <td style="font-size:.8rem;font-family:'JetBrains Mono',monospace">${u.phone || '—'}</td>
+        <td style="font-size:.8rem">${u.location || '—'}</td>
+        <td style="font-size:.78rem;color:var(--text-muted)">${dateStr}</td>
+        <td><span class="status ${statusClass}">${statusLabel}</span></td>
+        <td>
+          <div class="action-btns">
+            <button class="act act-view" onclick="showToast('Viewing ${u.name}','info')">👁</button>
+            ${u.status !== 'banned'
+              ? `<button class="act act-ban" onclick="adminBanUser(${u.id}, this)">🚫</button>`
+              : `<button class="act act-approve" onclick="adminUnbanUser(${u.id}, this)">✅ Unban</button>`
+            }
+          </div>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+
+    /* Update the user count badge */
+    const countEl = document.getElementById('total-user-count');
+    if (countEl) {
+      const base = parseInt(countEl.dataset.base || '2847');
+      countEl.textContent = (base + registeredUsers.length).toLocaleString();
+    }
+  }
+
+  renderUsers();
+}
+
+/* Admin: ban a user */
+window.adminBanUser = function(id, btn) {
+  FC.updateUserStatus(id, 'banned');
+  const tr = document.getElementById(`ru-${id}`);
+  if (tr) {
+    tr.querySelector('.status').className = 'status status-banned';
+    tr.querySelector('.status').textContent = 'Banned';
+    btn.outerHTML = `<button class="act act-approve" onclick="adminUnbanUser(${id}, this)">✅ Unban</button>`;
+  }
+  showToast('User banned', 'error');
+};
+
+/* Admin: unban a user */
+window.adminUnbanUser = function(id, btn) {
+  FC.updateUserStatus(id, 'active');
+  const tr = document.getElementById(`ru-${id}`);
+  if (tr) {
+    tr.querySelector('.status').className = 'status status-active';
+    tr.querySelector('.status').textContent = 'Active';
+    btn.outerHTML = `<button class="act act-ban" onclick="adminBanUser(${id}, this)">🚫</button>`;
+  }
+  showToast('User unbanned ✅', 'success');
+};
