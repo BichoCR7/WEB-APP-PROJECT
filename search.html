@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Find a Fundi — FundiConnect</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    body { padding-top:68px; }
+    .search-header {
+      background: linear-gradient(160deg,var(--bg-card),var(--bg-panel));
+      border-bottom:1px solid var(--border); padding:40px 0;
+    }
+    .search-layout { display:grid; grid-template-columns:260px 1fr; gap:28px; }
+    .filter-panel {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-md); padding:24px;
+      height:fit-content; position:sticky; top:90px;
+    }
+    .filter-section { margin-bottom:24px; }
+    .filter-section h4 { font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:14px; }
+    .filter-check { display:flex; align-items:center; gap:8px; margin-bottom:10px; cursor:pointer; font-size:.88rem; }
+    .filter-check input { accent-color:var(--blue); }
+    .filter-range { display:flex; gap:8px; }
+    .filter-range input { flex:1; }
+    .results-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+    .results-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+    .sort-select { background:var(--bg-elevated); border:1px solid var(--border); color:var(--text-secondary); padding:8px 12px; border-radius:var(--radius-sm); font-size:.85rem; }
+    .pagination { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:40px; }
+    .page-btn { width:36px; height:36px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:.85rem; font-weight:600; background:var(--bg-elevated); border:1px solid var(--border); color:var(--text-secondary); cursor:pointer; transition:all var(--transition); }
+    .page-btn.active, .page-btn:hover { background:var(--blue-glow); border-color:var(--blue); color:var(--blue-light); }
+    @media(max-width:900px) {
+      .search-layout { grid-template-columns:1fr; }
+      .filter-panel { position:static; }
+      .results-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">🔧</div>FundiConnect</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="search.html" class="active">Find a Fundi</a></li>
+      <li><a href="register.html?role=fundi">Become a Fundi</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-ghost btn-sm">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+    </div>
+    <button class="nav-toggle">☰</button>
+  </div>
+</nav>
+<div class="mobile-menu">
+  
+</div>
+
+<!-- Search Header -->
+<div class="search-header">
+  <div class="container">
+    <h2 style="margin-bottom:20px">Find a Trusted Fundi</h2>
+    <div class="search-hero" style="max-width:100%">
+      <div class="search-hero-field">
+        <span class="search-icon">🔧</span>
+        <input type="text" id="fundi-search" placeholder="Electrician, plumber, painter…" />
+      </div>
+      <div class="search-hero-field" style="flex:.8">
+        <span class="search-icon">📍</span>
+        <input type="text" id="location-search" placeholder="Location (e.g. Westlands)" />
+      </div>
+      <button class="search-hero-btn">Search</button>
+    </div>
+
+    <!-- Category pills -->
+    <div class="cat-grid" style="margin-top:20px">
+      <div class="cat-pill active" data-filter="all">All Services</div>
+      <div class="cat-pill" data-filter="electrician"><span class="cat-icon">⚡</span> Electrician</div>
+      <div class="cat-pill" data-filter="plumber"><span class="cat-icon">🔧</span> Plumber</div>
+      <div class="cat-pill" data-filter="carpenter"><span class="cat-icon">🪚</span> Carpenter</div>
+      <div class="cat-pill" data-filter="painter"><span class="cat-icon">🎨</span> Painter</div>
+      <div class="cat-pill" data-filter="welder"><span class="cat-icon">🔩</span> Welder</div>
+      <div class="cat-pill" data-filter="cleaner"><span class="cat-icon">🧹</span> Cleaner</div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Layout -->
+<div class="container section-sm">
+  <div class="search-layout">
+    <!-- Filters -->
+    <aside class="filter-panel">
+      <h3 style="margin-bottom:20px;font-size:1rem">Filters</h3>
+
+      <div class="filter-section">
+        <h4>Rating</h4>
+        <label class="filter-check"><input type="radio" name="rating" checked> ⭐ All ratings</label>
+        <label class="filter-check"><input type="radio" name="rating"> ⭐⭐⭐⭐⭐ 5 stars</label>
+        <label class="filter-check"><input type="radio" name="rating"> ⭐⭐⭐⭐+ 4 & above</label>
+        <label class="filter-check"><input type="radio" name="rating"> ⭐⭐⭐+ 3 & above</label>
+      </div>
+
+      <div class="filter-section">
+        <h4>Availability</h4>
+        <label class="filter-check"><input type="checkbox" checked> Available now</label>
+        <label class="filter-check"><input type="checkbox" checked> Available today</label>
+        <label class="filter-check"><input type="checkbox"> Weekend available</label>
+      </div>
+
+      <div class="filter-section">
+        <h4>Hourly Rate (Ksh)</h4>
+        <div class="filter-range">
+          <input class="form-input" type="number" placeholder="Min" style="font-size:.82rem;padding:8px" />
+          <input class="form-input" type="number" placeholder="Max" style="font-size:.82rem;padding:8px" />
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h4>Fundi Rank</h4>
+        <label class="filter-check"><input type="checkbox" checked> 🥇 Elite</label>
+        <label class="filter-check"><input type="checkbox" checked> 🥈 Gold</label>
+        <label class="filter-check"><input type="checkbox" checked> 🥉 Silver</label>
+        <label class="filter-check"><input type="checkbox"> Bronze</label>
+      </div>
+
+      <div class="filter-section">
+        <h4>Verification</h4>
+        <label class="filter-check"><input type="checkbox" checked> ✅ Verified only</label>
+      </div>
+
+      <button class="btn btn-ghost btn-full" onclick="showToast('Filters reset','info')">Reset Filters</button>
+    </aside>
+
+    <!-- Results -->
+    <div>
+      <div class="results-header">
+        <div>
+          <span style="font-size:.9rem;font-weight:700">24 fundis found</span>
+          <span style="font-size:.82rem;color:var(--text-muted);margin-left:8px">in Nairobi</span>
+        </div>
+        <select class="sort-select">
+          <option>Sort: Top Rated</option>
+          <option>Sort: Lowest Price</option>
+          <option>Sort: Most Reviews</option>
+          <option>Sort: Nearest</option>
+        </select>
+      </div>
+
+      <div class="results-grid" id="results-grid">
