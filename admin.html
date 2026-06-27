@@ -594,3 +594,369 @@
       </div>
     </div>
   </div><!-- /users -->
+  
+  <!-- ══ PAGE: BOOKINGS ══ -->
+  <div class="page" id="page-bookings">
+    <div class="filter-row">
+      <input class="filter-search" placeholder="🔍 Search bookings…"/>
+      <select class="filter-select"><option>All Status</option><option>Pending</option><option>In Progress</option><option>Completed</option><option>Cancelled</option></select>
+      <select class="filter-select"><option>All Services</option><option>Electrical</option><option>Plumbing</option><option>Carpentry</option><option>Painting</option></select>
+    </div>
+    <div class="admin-panel">
+      <div class="panel-header"><h3>📅 All Bookings</h3><span style="font-size:.8rem;color:var(--text-muted)">1,256 total</span></div>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Client</th><th>Fundi</th><th>Service</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-muted)">#2345</td><td style="font-size:.83rem">Amina Wanjiku</td><td style="font-size:.83rem">John Kamau</td><td><span class="badge badge-blue">Electrical</span></td><td style="font-size:.78rem">2 May 2025</td><td style="font-family:'JetBrains Mono',monospace;font-size:.82rem">Ksh 3,500</td><td><span class="status status-completed">Completed</span></td><td><div class="action-btns"><button class="act act-view" onclick="showToast('Booking details loaded','info')">👁 View</button></div></td></tr>
+            <tr><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-muted)">#2344</td><td style="font-size:.83rem">Brian Ochieng</td><td style="font-size:.83rem">Mary Njeri</td><td><span class="badge badge-green">Plumbing</span></td><td style="font-size:.78rem">3 May 2025</td><td style="font-family:'JetBrains Mono',monospace;font-size:.82rem">Ksh 2,000</td><td><span class="status status-active">In Progress</span></td><td><div class="action-btns"><button class="act act-view" onclick="showToast('Booking details loaded','info')">👁 View</button></div></td></tr>
+            <tr><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-muted)">#2343</td><td style="font-size:.83rem">Fatuma Hassan</td><td style="font-size:.83rem">Kiptoo Kibet</td><td><span class="badge badge-purple">Carpentry</span></td><td style="font-size:.78rem">4 May 2025</td><td style="font-family:'JetBrains Mono',monospace;font-size:.82rem">Ksh 7,500</td><td><span class="status status-pending">Pending</span></td><td><div class="action-btns"><button class="act act-view" onclick="showToast('Booking details loaded','info')">👁 View</button><button class="act act-reject" onclick="showToast('Booking cancelled','error')">Cancel</button></div></td></tr>
+            <tr><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-muted)">#2341</td><td style="font-size:.83rem">Daniel Mwangi</td><td style="font-size:.83rem">Grace Atieno</td><td><span class="badge badge-orange">Painting</span></td><td style="font-size:.78rem">4 May 2025</td><td style="font-family:'JetBrains Mono',monospace;font-size:.82rem">Ksh 4,200</td><td><span class="status status-dispute">Dispute</span></td><td><div class="action-btns"><button class="act act-view" onclick="navigate('disputes',null)">⚠️ Resolve</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div><!-- /bookings -->
+
+  <!-- ══ PAGE: DISPUTES ══ -->
+  <div class="page" id="page-disputes">
+    <div class="admin-grid">
+      <div class="admin-panel panel-full">
+        <div class="panel-header"><h3>⚠️ Open Disputes (2)</h3></div>
+        <div class="panel-body">
+
+          <div class="dispute-card">
+            <div class="dispute-header">
+              <div>
+                <strong style="font-size:.9rem">Booking #2341 — Painting Dispute</strong>
+                <div class="dispute-id">Opened: 4 May 2025 · 14:30</div>
+              </div>
+              <span class="status status-dispute">Open</span>
+            </div>
+            <div class="dispute-body">
+              <div class="dispute-parties">
+                <span class="dispute-party">👤 Daniel Mwangi (Client)</span>
+                <span class="dispute-party">🛠️ Grace Atieno (Fundi)</span>
+              </div>
+              <p>Client claims the fundi left the job incomplete — 2 rooms were not painted as agreed. Fundi disputes this saying the scope changed on-site. Amount held in escrow: <strong>Ksh 4,200</strong></p>
+              <div style="display:flex;gap:8px">
+                <button class="act act-approve" onclick="resolveDispute(this,'client')">💰 Refund Client</button>
+                <button class="act act-view" onclick="resolveDispute(this,'fundi')">💳 Pay Fundi</button>
+                <button class="act act-view" onclick="showToast('Split payment applied','info')">✂️ Split 50/50</button>
+                <button class="act act-view" onclick="showToast('Chat log opened','info')">💬 View Chat</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="dispute-card">
+            <div class="dispute-header">
+              <div>
+                <strong style="font-size:.9rem">Booking #2337 — Electrical Overcharge</strong>
+                <div class="dispute-id">Opened: 1 May 2025 · 09:15</div>
+              </div>
+              <span class="status status-dispute">Open</span>
+            </div>
+            <div class="dispute-body">
+              <div class="dispute-parties">
+                <span class="dispute-party">👤 Christine Njoki (Client)</span>
+                <span class="dispute-party">🛠️ Mike Otieno (Fundi)</span>
+              </div>
+              <p>Client says fundi charged extra Ksh 800 beyond the agreed price for "additional materials" that were not used. Amount held: <strong>Ksh 2,800</strong></p>
+              <div style="display:flex;gap:8px">
+                <button class="act act-approve" onclick="resolveDispute(this,'client')">💰 Refund Client</button>
+                <button class="act act-view" onclick="resolveDispute(this,'fundi')">💳 Pay Fundi</button>
+                <button class="act act-view" onclick="showToast('Chat log opened','info')">💬 View Chat</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /disputes -->
+
+  <!-- ══ PAGE: PAYMENTS ══ -->
+  <div class="page" id="page-payments">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" style="font-size:1.4rem">Ksh 842,000</div><div class="stat-label">Total Revenue</div></div>
+      <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" style="font-size:1.4rem">Ksh 28,500</div><div class="stat-label">In Escrow</div></div>
+      <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" style="font-size:1.4rem">Ksh 780,000</div><div class="stat-label">Paid Out</div></div>
+      <div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-value" style="font-size:1.4rem">Ksh 6,400</div><div class="stat-label">Refunded</div></div>
+    </div>
+    <div class="admin-panel">
+      <div class="panel-header"><h3>💳 Transaction History</h3></div>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>Tx ID</th><th>Client</th><th>Fundi</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-muted)">MPX-0091</td><td style="font-size:.83rem">Amina Wanjiku</td><td style="font-size:.83rem">John Kamau</td><td style="font-family:'JetBrains Mono',monospace;font-size:.83rem">Ksh 3,500</td><td><span class="badge badge-green">M-Pesa</span></td><td style="font-size:.78rem">2 May 2025</td><td><span class="status status-completed">Paid Out</span></td></tr>
+            <tr><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-muted)">MPX-0090</td><td style="font-size:.83rem">Brian Ochieng</td><td style="font-size:.83rem">Mary Njeri</td><td style="font-family:'JetBrains Mono',monospace;font-size:.83rem">Ksh 2,000</td><td><span class="badge badge-green">M-Pesa</span></td><td style="font-size:.78rem">3 May 2025</td><td><span class="status status-pending">In Escrow</span></td></tr>
+            <tr><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-muted)">MPX-0089</td><td style="font-size:.83rem">Christine Njoki</td><td style="font-size:.83rem">Mike Otieno</td><td style="font-family:'JetBrains Mono',monospace;font-size:.83rem">Ksh 2,800</td><td><span class="badge badge-green">M-Pesa</span></td><td style="font-size:.78rem">1 May 2025</td><td><span class="status status-dispute">Disputed</span></td></tr>
+            <tr><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-muted)">MPX-0088</td><td style="font-size:.83rem">David Kamau</td><td style="font-size:.83rem">Susan Waweru</td><td style="font-family:'JetBrains Mono',monospace;font-size:.83rem">Ksh 5,000</td><td><span class="badge badge-orange">Cash</span></td><td style="font-size:.78rem">30 Apr 2025</td><td><span class="status status-completed">Paid Out</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div><!-- /payments -->
+
+  <!-- ══ PAGE: ANALYTICS ══ -->
+  <div class="page" id="page-analytics">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-value">94%</div><div class="stat-label">Completion Rate</div><div class="stat-trend trend-up">↑ 3% this month</div></div>
+      <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-value">4.7</div><div class="stat-label">Avg Fundi Rating</div><div class="stat-trend trend-up">↑ 0.2 pts</div></div>
+      <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-value">18m</div><div class="stat-label">Avg Response Time</div><div class="stat-trend trend-down">↓ 5min faster</div></div>
+      <div class="stat-card"><div class="stat-icon">🔄</div><div class="stat-value">68%</div><div class="stat-label">Repeat Clients</div><div class="stat-trend trend-up">↑ 11%</div></div>
+    </div>
+    <div class="admin-grid">
+      <div class="admin-panel">
+        <div class="panel-header"><h3>🏆 Top Fundis</h3></div>
+        <div class="panel-body">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Fundi</th><th>Jobs</th><th>Rating</th><th>Revenue</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:800;color:var(--amber)">1</td><td style="font-size:.83rem">John Kamau</td><td style="font-size:.83rem">142</td><td>⭐ 4.9</td><td style="font-family:'JetBrains Mono',monospace;font-size:.8rem">Ksh 89k</td></tr>
+              <tr><td style="font-weight:800;color:var(--text-secondary)">2</td><td style="font-size:.83rem">Kiptoo Kibet</td><td style="font-size:.83rem">118</td><td>⭐ 4.8</td><td style="font-family:'JetBrains Mono',monospace;font-size:.8rem">Ksh 74k</td></tr>
+              <tr><td style="font-weight:800;color:var(--orange)">3</td><td style="font-size:.83rem">Mary Njeri</td><td style="font-size:.83rem">97</td><td>⭐ 4.7</td><td style="font-family:'JetBrains Mono',monospace;font-size:.8rem">Ksh 61k</td></tr>
+              <tr><td style="color:var(--text-muted)">4</td><td style="font-size:.83rem">Grace Atieno</td><td style="font-size:.83rem">84</td><td>⭐ 4.6</td><td style="font-family:'JetBrains Mono',monospace;font-size:.8rem">Ksh 52k</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="admin-panel">
+        <div class="panel-header"><h3>🌍 Bookings by City</h3></div>
+        <div class="panel-body">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:.83rem;margin-bottom:4px"><span>Nairobi</span><span style="font-family:'JetBrains Mono',monospace">568 jobs</span></div>
+              <div style="background:var(--bg-elevated);border-radius:4px;height:8px"><div class="progress-fill" data-width="68%" style="height:100%;border-radius:4px;background:var(--blue)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:.83rem;margin-bottom:4px"><span>Mombasa</span><span style="font-family:'JetBrains Mono',monospace">234 jobs</span></div>
+              <div style="background:var(--bg-elevated);border-radius:4px;height:8px"><div class="progress-fill" data-width="45%" style="height:100%;border-radius:4px;background:var(--green)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:.83rem;margin-bottom:4px"><span>Kisumu</span><span style="font-family:'JetBrains Mono',monospace">187 jobs</span></div>
+              <div style="background:var(--bg-elevated);border-radius:4px;height:8px"><div class="progress-fill" data-width="32%" style="height:100%;border-radius:4px;background:var(--purple)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:.83rem;margin-bottom:4px"><span>Eldoret</span><span style="font-family:'JetBrains Mono',monospace">142 jobs</span></div>
+              <div style="background:var(--bg-elevated);border-radius:4px;height:8px"><div class="progress-fill" data-width="22%" style="height:100%;border-radius:4px;background:var(--amber)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:.83rem;margin-bottom:4px"><span>Thika</span><span style="font-family:'JetBrains Mono',monospace">125 jobs</span></div>
+              <div style="background:var(--bg-elevated);border-radius:4px;height:8px"><div class="progress-fill" data-width="16%" style="height:100%;border-radius:4px;background:var(--orange)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /analytics -->
+
+  <!-- ══ PAGE: REVENUE ══ -->
+  <div class="page" id="page-revenue">
+    <div class="admin-grid">
+      <div class="admin-panel">
+        <div class="panel-header"><h3>💰 Revenue Breakdown</h3></div>
+        <div class="panel-body">
+          <div class="rev-row"><div class="rev-label">Total Transactions</div><div class="rev-val">Ksh 842,000</div></div>
+          <div class="rev-row"><div class="rev-label">Platform Commission (10%)</div><div class="rev-val" style="color:var(--green)">Ksh 84,200</div></div>
+          <div class="rev-row"><div class="rev-label">Paid to Fundis (90%)</div><div class="rev-val">Ksh 757,800</div></div>
+          <div class="rev-row"><div class="rev-label">In Escrow</div><div class="rev-val" style="color:var(--amber)">Ksh 28,500</div></div>
+          <div class="rev-row"><div class="rev-label">Refunded</div><div class="rev-val" style="color:var(--red)">Ksh 6,400</div></div>
+          <div class="rev-row"><div class="rev-label">Net Platform Revenue</div><div class="rev-val" style="color:var(--green);font-size:1.1rem">Ksh 77,800</div></div>
+        </div>
+      </div>
+      <div class="admin-panel">
+        <div class="panel-header"><h3>📊 M-Pesa vs Cash</h3></div>
+        <div class="panel-body">
+          <div style="text-align:center;padding:20px 0">
+            <svg width="140" height="140" viewBox="0 0 140 140">
+              <circle cx="70" cy="70" r="54" fill="none" stroke="var(--bg-elevated)" stroke-width="20"/>
+              <circle cx="70" cy="70" r="54" fill="none" stroke="var(--green)" stroke-width="20" stroke-dasharray="270 339" stroke-dashoffset="0"/>
+              <circle cx="70" cy="70" r="54" fill="none" stroke="var(--amber)" stroke-width="20" stroke-dasharray="69 339" stroke-dashoffset="-270"/>
+              <text x="70" y="68" text-anchor="middle" fill="var(--text-primary)" font-size="14" font-weight="700">80%</text>
+              <text x="70" y="84" text-anchor="middle" fill="var(--text-muted)" font-size="10">M-Pesa</text>
+            </svg>
+          </div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> M-Pesa — 80% (Ksh 673,600)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div> Cash — 20% (Ksh 168,400)</div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /revenue -->
+
+  <!-- ══ PAGE: SETTINGS ══ -->
+  <div class="page" id="page-settings">
+    <div class="admin-grid">
+      <div class="admin-panel">
+        <div class="panel-header"><h3>⚙️ Platform Settings</h3></div>
+        <div class="panel-body">
+          <div class="form-group" style="margin-bottom:18px">
+            <label class="form-label" style="display:block;margin-bottom:6px;font-size:.83rem;color:var(--text-secondary)">Platform Commission (%)</label>
+            <input type="number" value="10" class="filter-search" style="width:100%"/>
+          </div>
+          <div class="form-group" style="margin-bottom:18px">
+            <label class="form-label" style="display:block;margin-bottom:6px;font-size:.83rem;color:var(--text-secondary)">Emergency Response Radius (km)</label>
+            <input type="number" value="5" class="filter-search" style="width:100%"/>
+          </div>
+          <div class="form-group" style="margin-bottom:18px">
+            <label class="form-label" style="display:block;margin-bottom:6px;font-size:.83rem;color:var(--text-secondary)">Minimum Fundi Rating to appear in search</label>
+            <input type="number" value="3.5" step="0.1" class="filter-search" style="width:100%"/>
+          </div>
+          <div class="form-group" style="margin-bottom:24px">
+            <label class="form-label" style="display:block;margin-bottom:6px;font-size:.83rem;color:var(--text-secondary)">Auto-approve fundis with verified national ID</label>
+            <select class="filter-select" style="width:100%"><option>No — Manual review required</option><option>Yes — Auto-approve</option></select>
+          </div>
+          <button class="btn btn-primary" style="width:100%" onclick="showToast('Settings saved ✅','success')">Save Settings</button>
+        </div>
+      </div>
+      <div class="admin-panel">
+        <div class="panel-header"><h3>📢 Send Announcement</h3></div>
+        <div class="panel-body">
+          <div style="margin-bottom:14px">
+            <label style="display:block;margin-bottom:6px;font-size:.83rem;color:var(--text-secondary)">Target Audience</label>
+            <select class="filter-select" style="width:100%"><option>All Users</option><option>Clients only</option><option>Fundis only</option></select>
+          </div>
+          <div style="margin-bottom:14px">
+            <label style="display:block;margin-bottom:6px;font-size:.83rem;color:var(--text-secondary)">Message</label>
+            <textarea class="filter-search" rows="4" placeholder="Type your announcement…" style="width:100%;resize:vertical"></textarea>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-outline" style="flex:1" onclick="showToast('Test sent to admin email','info')">🧪 Test</button>
+            <button class="btn btn-primary" style="flex:1" onclick="showToast('Announcement sent to all users 📢','success')">📢 Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /settings -->
+
+</main>
+
+<div class="toast-container"></div>
+<script src="js/main.js"></script>
+<script>
+  /* ── Navigation ── */
+  function navigate(page, linkEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page)?.classList.add('active');
+    if (linkEl) {
+      document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+      linkEl.classList.add('active');
+    }
+    const titles = {
+      dashboard:'Dashboard', analytics:'Analytics', fundis:'Fundi Approvals',
+      users:'User Management', bookings:'Bookings', disputes:'Disputes',
+      payments:'Payments', revenue:'Revenue', settings:'Settings'
+    };
+    const subs = {
+      dashboard:'Welcome back, Admin. Here\'s what\'s happening today.',
+      fundis:'Review and approve fundi registration applications.',
+      users:'Manage all platform users — clients and fundis.',
+      bookings:'Track and manage all platform bookings.',
+      disputes:'Resolve disputes between clients and fundis.',
+      payments:'Monitor all M-Pesa and cash transactions.',
+      revenue:'Platform revenue and commission tracking.',
+      analytics:'Platform performance metrics and insights.',
+      settings:'Configure platform settings and notifications.'
+    };
+    document.getElementById('page-title').textContent = titles[page] || 'Admin';
+    document.getElementById('page-sub').textContent = subs[page] || '';
+  }
+
+  /* ── Approval actions ── */
+  function approveCard(id, name) {
+    const card = document.getElementById(id);
+    card.style.opacity = '0.5';
+    card.style.transition = 'all .3s';
+    setTimeout(() => card.remove(), 300);
+    showToast(`${name} approved as fundi ✅`, 'success');
+    const badge = document.querySelector('.badge-orange');
+    if (badge) {
+      const count = parseInt(badge.textContent) - 1;
+      badge.textContent = count > 0 ? count : '';
+    }
+  }
+
+  function rejectCard(id, name) {
+    const card = document.getElementById(id);
+    card.style.opacity = '0.5';
+    card.style.transition = 'all .3s';
+    setTimeout(() => card.remove(), 300);
+    showToast(`${name}'s application rejected`, 'error');
+  }
+
+  /* ── Dispute resolution ── */
+  function resolveDispute(btn, winner) {
+    const card = btn.closest('.dispute-card');
+    const label = winner === 'client' ? 'Client refunded ✅' : 'Fundi paid out ✅';
+    showToast(label, 'success');
+    setTimeout(() => card.style.opacity = '0.4', 200);
+  }
+
+  /* ── Revenue chart ── */
+  const revData = [52,64,38,71,80,93,68,88,76,95,84,110];
+  const revMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const maxRev = Math.max(...revData);
+  const chart = document.getElementById('rev-chart');
+  if (chart) {
+    revData.forEach((v, i) => {
+      const bar = document.createElement('div');
+      bar.className = 'chart-bar';
+      if (i === 10) bar.dataset.active = 'true'; // Nov = current
+      bar.style.height = (v / maxRev * 90) + 'px';
+      bar.innerHTML = `<div class="chart-tooltip">Ksh ${v}k</div>`;
+      chart.appendChild(bar);
+    });
+  }
+
+  /* ── Notifications ── */
+  const notifBtn = document.getElementById('notif-btn');
+  const notifPanel = document.getElementById('notif-panel');
+  notifBtn?.addEventListener('click', e => { e.stopPropagation(); notifPanel.classList.toggle('open'); });
+  document.addEventListener('click', e => { if (!notifPanel?.contains(e.target) && e.target !== notifBtn) notifPanel?.classList.remove('open'); });
+
+  /* ── Tab switching ── */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.closest('[data-tabs]') || btn.closest('.page');
+      const target = btn.dataset.tab;
+      const allBtns = btn.parentElement.querySelectorAll('.tab-btn');
+      const allPanes = (btn.closest('.page') || document).querySelectorAll('.tab-pane');
+      allBtns.forEach(b => b.classList.remove('active'));
+      allPanes.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(`[data-tab-pane="${target}"]`)?.classList.add('active');
+    });
+  });
+
+  /* ── Progress bars ── */
+  setTimeout(() => {
+    document.querySelectorAll('.progress-fill[data-width]').forEach(el => {
+      el.style.width = el.dataset.width;
+      el.style.transition = 'width 1s ease';
+    });
+  }, 500);
+
+  /* ── Counter animation ── */
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(timer); }
+      const n = Math.floor(current);
+      el.textContent = n >= 1000 ? (n/1000).toFixed(1) + 'k' + suffix : n + suffix;
+    }, 20);
+  });
+
+  /* ── Filter users ── */
+  function filterUsers(q) {
+    const val = (q || '').toLowerCase();
+    document.querySelectorAll('#users-table tbody tr').forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(val) ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
