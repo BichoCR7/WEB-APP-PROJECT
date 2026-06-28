@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support — FundiConnect</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    :root { --blue-light:#79C0FF; --border-blue:rgba(0,122,204,0.35); --radius-xl:24px; --shadow-lg:0 20px 60px rgba(0,0,0,.5); --green-wa:#25D366; }
+    .support-hero {
+      padding:120px 24px 60px; text-align:center; position:relative; overflow:hidden;
+      background:linear-gradient(180deg,rgba(0,122,204,.08) 0%,transparent 100%);
+      border-bottom:1px solid var(--border);
+    }
+    .support-hero::before {
+      content:''; position:absolute; inset:0; pointer-events:none; opacity:.03;
+      background-image:radial-gradient(circle,var(--blue) 1px,transparent 1px);
+      background-size:30px 30px;
+    }
+    .search-box {
+      display:flex; align-items:center; max-width:560px; margin:24px auto 0;
+      background:var(--bg-card); border:1.5px solid var(--border); border-radius:14px;
+      padding:6px 6px 6px 20px; gap:10px; transition:border-color .2s;
+    }
+    .search-box:focus-within { border-color:var(--blue); }
+    .search-box input {
+      flex:1; background:none; border:none; color:var(--text-primary); font-size:.95rem;
+      font-family:'DM Sans',sans-serif; outline:none;
+    }
+    .search-box input::placeholder { color:var(--text-muted); }
+
+    /* ── Quick links ── */
+    .quick-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:56px; }
+    .quick-card {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-xl);
+      padding:24px 20px; text-align:center; cursor:pointer; transition:all .25s; text-decoration:none;
+    }
+    .quick-card:hover { border-color:var(--blue); transform:translateY(-3px); box-shadow:0 16px 40px rgba(0,0,0,.3); }
+    .quick-icon { font-size:2rem; margin-bottom:12px; display:block; }
+    .quick-card h4 { font-size:.9rem; margin-bottom:4px; }
+    .quick-card p  { font-size:.78rem; }
+
+    /* ── FAQ ── */
+    .faq-section h2 { margin-bottom:8px; }
+    .faq-tabs { display:flex; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
+    .faq-tab {
+      padding:8px 18px; border-radius:100px; font-size:.83rem; font-weight:600;
+      background:var(--bg-elevated); border:1px solid var(--border); cursor:pointer;
+      transition:all .2s; color:var(--text-secondary);
+    }
+    .faq-tab.active { background:var(--blue-glow); border-color:var(--border-blue); color:var(--blue-light); }
+    .faq-item {
+      border-bottom:1px solid var(--border); overflow:hidden;
+    }
+    .faq-q {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 0; cursor:pointer; font-size:.92rem; font-weight:600;
+      user-select:none;
+    }
+    .faq-q:hover { color:var(--blue-light); }
+    .faq-chevron { font-size:1.1rem; transition:transform .3s; color:var(--text-muted); flex-shrink:0; }
+    .faq-item.open .faq-chevron { transform:rotate(180deg); }
+    .faq-a {
+      max-height:0; overflow:hidden; transition:max-height .35s ease;
+      font-size:.87rem; color:var(--text-secondary); line-height:1.7;
+    }
+    .faq-item.open .faq-a { max-height:300px; }
+    .faq-a-inner { padding-bottom:18px; }
+
+    /* ── Contact cards ── */
+    .contact-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:56px; }
+    .contact-card {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-xl);
+      padding:32px 24px; text-align:center; transition:all .25s;
+    }
+    .contact-card:hover { border-color:var(--blue); transform:translateY(-3px); }
+    .contact-icon {
+      width:60px; height:60px; border-radius:16px; margin:0 auto 18px;
+      display:flex; align-items:center; justify-content:center; font-size:1.6rem;
+    }
+    .contact-card h3 { margin-bottom:8px; font-size:1rem; }
+    .contact-card p  { font-size:.83rem; margin-bottom:18px; }
+    .wa-btn {
+      display:inline-flex; align-items:center; gap:8px; padding:11px 24px;
+      background:var(--green-wa); color:#fff; border-radius:10px; font-weight:700;
+      font-size:.88rem; cursor:pointer; border:none; text-decoration:none;
+      transition:all .2s; font-family:'DM Sans',sans-serif;
+    }
+    .wa-btn:hover { background:#1ebe5b; transform:translateY(-1px); color:#fff; }
+
+    /* ── Resources ── */
+    .resource-list { list-style:none; }
+    .resource-list li {
+      display:flex; align-items:center; gap:12px; padding:14px 16px;
+      border-radius:10px; margin-bottom:6px; cursor:pointer; transition:all .2s;
+      background:var(--bg-card); border:1px solid var(--border);
+    }
+    .resource-list li:hover { border-color:var(--blue); background:var(--bg-elevated); }
+    .resource-list li .ri { font-size:1.2rem; }
+    .resource-list li .rt { font-size:.88rem; font-weight:600; flex:1; }
+    .resource-list li .ra { font-size:.75rem; color:var(--text-muted); }
+
+    /* ── Contact form ── */
+    .contact-form-section {
+      background:var(--bg-panel); border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+      padding:80px 0;
+    }
+    .contact-form-wrap {
+      max-width:680px; margin:0 auto; background:var(--bg-card);
+      border:1px solid var(--border); border-radius:var(--radius-xl); padding:48px;
+    }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-group { margin-bottom:18px; }
+    .form-group label { display:block; margin-bottom:6px; font-size:.83rem; font-weight:600; color:var(--text-secondary); }
+    .form-input {
+      width:100%; padding:11px 14px; background:var(--bg-elevated); border:1px solid var(--border);
+      border-radius:9px; color:var(--text-primary); font-size:.88rem; font-family:'DM Sans',sans-serif;
+      transition:border-color .2s; outline:none;
+    }
+    .form-input:focus { border-color:var(--blue); }
+    textarea.form-input { resize:vertical; min-height:120px; }
+    select.form-input { cursor:pointer; }
+
+    .scroll-reveal { opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
+    .scroll-reveal.visible { opacity:1; transform:translateY(0); }
+
+    @media(max-width:900px) {
+      .quick-grid { grid-template-columns:repeat(2,1fr); }
+      .contact-grid { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:640px) {
+      .quick-grid { grid-template-columns:1fr 1fr; }
+      .contact-grid { grid-template-columns:1fr; }
+      .form-row { grid-template-columns:1fr; }
+      .contact-form-wrap { padding:28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div style="width:32px;height:32px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center">🔧</div>
+      FundiConnect
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="search.html">Find Fundi</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="support.html" class="active">Support</a></li>
+      <li><a href="login.html" class="nav-cta">Get Started</a></li>
+    </ul>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="support-hero">
+  <div class="section-label" style="position:relative;z-index:1">🛟 Help Centre</div>
+  <h1 style="font-size:clamp(1.8rem,4vw,3rem);margin-bottom:12px;position:relative;z-index:1">How Can We Help You?</h1>
+  <p style="max-width:500px;margin:0 auto;position:relative;z-index:1">Search our help articles, chat with our AI assistant, or reach out to our team directly.</p>
+  <div class="search-box">
+    <span style="font-size:1.1rem">🔍</span>
+    <input type="text" placeholder="Search for help articles, topics, FAQs…" oninput="filterFAQ(this.value)" />
+    <button class="btn btn-primary" style="padding:10px 20px;font-size:.85rem">Search</button>
+  </div>
+</div>
+
+<!-- Main Content -->
+<section style="padding:56px 0 0">
+  <div class="container">
+
+    <!-- Quick Links -->
+    <div class="quick-grid scroll-reveal">
+      <a class="quick-card" href="#faq" onclick="setFaqTab('getting-started')">
+        <span class="quick-icon">🚀</span>
+        <h4>Getting Started</h4>
+        <p>New to FundiConnect? Start here</p>
+      </a>
+      <a class="quick-card" href="#faq" onclick="setFaqTab('bookings')">
+        <span class="quick-icon">📅</span>
+        <h4>Booking Help</h4>
+        <p>How to book, cancel, or reschedule</p>
+      </a>
+      <a class="quick-card" href="#faq" onclick="setFaqTab('payments')">
+        <span class="quick-icon">💳</span>
+        <h4>Payments & M-Pesa</h4>
+        <p>Payments, refunds, escrow explained</p>
+      </a>
+      <a class="quick-card" href="#faq" onclick="setFaqTab('fundis')">
+        <span class="quick-icon">🛠️</span>
+        <h4>For Fundis</h4>
+        <p>Registration, verification, payouts</p>
+      </a>
+    </div>
+
+    <!-- Contact Options -->
+    <div class="contact-grid scroll-reveal" id="contact">
+      <!-- WhatsApp -->
+      <div class="contact-card">
+        <div class="contact-icon" style="background:rgba(37,211,102,.15)">💬</div>
+        <h3>WhatsApp Support</h3>
+        <p>Chat with our team on WhatsApp. Fastest way to get help — typically reply within 5 minutes.</p>
+        <a href="https://wa.me/254700000000?text=Hello%20FundiConnect%2C%20I%20need%20help%20with..." target="_blank" class="wa-btn">
+          💬 WhatsApp Us
+        </a>
+        <p style="font-size:.73rem;color:var(--text-muted);margin-top:10px;margin-bottom:0">Mon–Sat · 8AM–8PM · 0700 000 000</p>
+      </div>
+
+      <!-- Help Centre -->
+      <div class="contact-card">
+        <div class="contact-icon" style="background:rgba(0,122,204,.15)">📚</div>
+        <h3>Help Centre</h3>
+        <p>Browse our library of step-by-step guides, video walkthroughs, and FAQs below.</p>
+        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="document.getElementById('faq').scrollIntoView({behavior:'smooth'})">
+          📚 Browse Articles
+        </button>
+        <p style="font-size:.73rem;color:var(--text-muted);margin-top:10px;margin-bottom:0">Available 24/7 · 120+ articles</p>
+      </div>
+
+      <!-- Email -->
+      <div class="contact-card">
+        <div class="contact-icon" style="background:rgba(197,134,192,.15)">📧</div>
+        <h3>Email Support</h3>
+        <p>For complex issues, disputes, or formal complaints. We aim to respond within 24 hours.</p>
+        <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="document.getElementById('contact-form').scrollIntoView({behavior:'smooth'})">
+          📧 Send Email
+        </button>
+        <p style="font-size:.73rem;color:var(--text-muted);margin-top:10px;margin-bottom:0">support@fundiconnect.ke</p>
+      </div>
+    </div>
+
+    <!-- AI Assistant Callout -->
+    <div style="background:linear-gradient(135deg,rgba(0,122,204,.12),rgba(78,201,176,.08));border:1px solid rgba(0,122,204,.3);border-radius:20px;padding:28px 32px;display:flex;align-items:center;gap:24px;margin-bottom:56px" class="scroll-reveal">
+      <div style="font-size:2.5rem;flex-shrink:0">🤖</div>
+      <div style="flex:1">
+        <h3 style="font-size:1.05rem;margin-bottom:6px">Try Our AI Assistant — Fundi AI</h3>
+        <p style="font-size:.85rem;margin:0">Get instant answers about bookings, payments, fundi verification, and platform policies. Available 24/7, responds in seconds.</p>
+      </div>
+      <button class="btn btn-primary" onclick="openAIAssistant()" style="flex-shrink:0;white-space:nowrap">
+        🤖 Chat with Fundi AI
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section style="padding:0 0 80px" id="faq">
+  <div class="container faq-section">
+    <div class="scroll-reveal">
+      <div class="section-label">❓ FAQ</div>
+      <h2 style="margin-bottom:24px">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-tabs">
+      <div class="faq-tab active" onclick="setFaqTab('getting-started',this)">🚀 Getting Started</div>
+      <div class="faq-tab" onclick="setFaqTab('bookings',this)">📅 Bookings</div>
+      <div class="faq-tab" onclick="setFaqTab('payments',this)">💳 Payments</div>
+      <div class="faq-tab" onclick="setFaqTab('fundis',this)">🛠️ For Fundis</div>
+      <div class="faq-tab" onclick="setFaqTab('safety',this)">🛡️ Safety</div>
+    </div>
+
+    <div id="faq-list">
+      <!-- Getting Started -->
+      <div class="faq-group" data-group="getting-started">
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>What is FundiConnect?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">FundiConnect is Kenya's trusted marketplace for booking verified fundis (skilled tradespeople) — including electricians, plumbers, carpenters, painters, and more. We connect clients to pre-verified professionals using M-Pesa escrow payments, real ratings, and smart matching.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>How do I create an account?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Click "Get Started" and choose whether you're signing up as a Client (to hire fundis) or a Fundi (to offer services). Fill in your name, phone number, email, and location. You'll receive an OTP on your phone to verify your number. Done in under 2 minutes!</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>Is FundiConnect free to use for clients?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Yes! Browsing profiles, searching for fundis, and creating bookings are completely free for clients. You only pay the agreed service fee when you book a fundi, and that payment is held securely in escrow until the job is done.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>Which counties is FundiConnect available in?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">We currently cover 18 counties including Nairobi, Mombasa, Kisumu, Eldoret, Thika, Nakuru, Machakos, Nyeri, Meru, Kakamega, and more. We're expanding rapidly — if your county isn't listed, register your interest and we'll prioritize your area.</div></div></div>
+      </div>
+
+      <!-- Bookings -->
+      <div class="faq-group" data-group="bookings" style="display:none">
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>How do I book a fundi?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Search for a fundi by service or location → View their profile and reviews → Click "Book Now" → Choose your date and time → Describe the job → Submit. The fundi receives your request instantly and will Accept or Decline within a few hours.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>Can I cancel a booking?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Yes. You can cancel a booking from your dashboard before the fundi arrives. If you cancel more than 2 hours before the scheduled time, you receive a full refund. Cancellations within 2 hours may incur a small cancellation fee (Ksh 200) to compensate the fundi for their time.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>What is Emergency Booking?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Emergency Booking lets you instantly connect to the nearest available fundi for urgent situations like burst pipes, power outages, or lockouts. The system automatically finds and connects you to the closest fundi — no need to browse profiles or fill in dates.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>What if the fundi doesn't show up?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">If a fundi doesn't show up, mark the booking as "No Show" in your dashboard. You'll receive a full automatic refund, and our team will investigate and penalize the fundi's account. Repeat no-shows result in permanent removal from the platform.</div></div></div>
+      </div>
+
+      <!-- Payments -->
+      <div class="faq-group" data-group="payments" style="display:none">
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>How does escrow payment work?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">When you book a fundi, you pay via M-Pesa upfront. FundiConnect holds that money securely in escrow. The fundi only receives payment after you confirm the job is complete and you're satisfied. This protects both parties — you don't lose money if the job isn't done, and the fundi is guaranteed payment once it is.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>Can I pay cash instead of M-Pesa?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Yes, cash payments are supported. However, we strongly recommend M-Pesa escrow for your protection. Cash bookings are not covered by our dispute resolution system, meaning if there's a problem, we have limited ability to help retrieve your money.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>How do I request a refund?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Go to your Dashboard → Bookings → Find the booking → Click "Raise Dispute" or "Request Refund." Our team reviews the case within 24–48 hours. Approved refunds are sent back to the original M-Pesa number within 2–5 business days.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>What are the platform fees?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Clients pay no platform fees. Fundis pay a 10% commission on each completed job. For example, if a job is Ksh 3,000, the fundi earns Ksh 2,700 net. This is how we fund the platform, verification systems, and support team.</div></div></div>
+      </div>
+
+      <!-- Fundis -->
+      <div class="faq-group" data-group="fundis" style="display:none">
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>How do I register as a fundi?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Click "Join as Fundi" and create your account. Upload your National ID, a clear profile photo, your skills, and optionally certificates and portfolio photos. Our admin team reviews your application within 24–72 hours. Once approved, you can start receiving bookings immediately.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>When do I get paid?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Once a client marks a job as "Complete," your payment is released from escrow immediately to your M-Pesa number. The money typically arrives within minutes. You can also view your earnings history and pending payouts in your Fundi Dashboard.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>How do I get more bookings?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Complete your profile 100% — add a clear photo, all your skills, a bio, and portfolio photos. Respond to booking requests quickly (fast response is ranked in our algorithm). Deliver quality work and collect 5-star reviews. Fundis with higher ratings appear first in search results.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>What is the ranking system (Bronze/Silver/Gold/Elite)?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Our ranking system rewards the best fundis: Bronze (0–20 jobs), Silver (21–50 jobs, avg 4.0+ rating), Gold (51–100 jobs, avg 4.5+), Elite (100+ jobs, avg 4.7+). Higher ranks come with better placement in search results, Elite badge on profile, and priority customer support.</div></div></div>
+      </div>
+
+      <!-- Safety -->
+      <div class="faq-group" data-group="safety" style="display:none">
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>How does FundiConnect verify fundis?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Every fundi must submit a valid Kenyan National ID or Passport. Our admin team manually verifies the document and cross-references it with the profile photo before approving the account. Only then can a fundi receive bookings. Clients can always see a fundi's verified badge on their profile.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>What if I feel unsafe during a booking?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Your safety is our top priority. If at any point during a booking you feel unsafe: end the session, move to a safe location, and call the police if necessary (999). Then report the incident through your dashboard. The fundi's account will be immediately suspended pending investigation. You will not be charged for the booking.</div></div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)"><span>How are disputes resolved?</span><span class="faq-chevron">⌄</span></div><div class="faq-a"><div class="faq-a-inner">Raise a dispute through your dashboard. Our team reviews the chat history, job description, photos, and both parties' statements. We aim to resolve disputes within 48 hours. If the dispute is in your favour, the escrow funds are released back to you. We have resolved 94% of disputes successfully.</div></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Resources -->
+<section style="padding:0 0 80px;background:var(--bg-panel);border-top:1px solid var(--border)">
+  <div class="container" style="padding-top:60px">
+    <div class="section-label scroll-reveal">📄 Resources</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px">
+      <div class="scroll-reveal">
+        <h3 style="margin-bottom:20px">Quick Links</h3>
+        <ul class="resource-list">
+          <li onclick="window.location.href='privacy.html'"><span class="ri">🔒</span><span class="rt">Privacy Policy</span><span class="ra">→</span></li>
+          <li onclick="window.location.href='terms.html'"><span class="ri">📋</span><span class="rt">Terms of Use</span><span class="ra">→</span></li>
+          <li onclick="showToast('Safety guide opening…','info')"><span class="ri">🛡️</span><span class="rt">Safety Guide for Clients</span><span class="ra">→</span></li>
+          <li onclick="showToast('Fundi guide opening…','info')"><span class="ri">📈</span><span class="rt">Fundi Success Guide</span><span class="ra">→</span></li>
+          <li onclick="showToast('Cookie policy opening…','info')"><span class="ri">🍪</span><span class="rt">Cookie Policy</span><span class="ra">→</span></li>
+          <li onclick="window.location.href='about.html'"><span class="ri">🏢</span><span class="rt">About FundiConnect</span><span class="ra">→</span></li>
+        </ul>
+      </div>
+      <div class="scroll-reveal">
+        <h3 style="margin-bottom:20px">Follow & Stay Updated</h3>
+        <ul class="resource-list">
+          <li onclick="showToast('Opening WhatsApp…','info')"><span class="ri">💬</span><span class="rt">WhatsApp Community Group</span><span class="ra">+254 700 000 000</span></li>
+          <li onclick="showToast('Opening Facebook…','info')"><span class="ri">📘</span><span class="rt">Facebook Page</span><span class="ra">@FundiConnectKE</span></li>
+          <li onclick="showToast('Opening Twitter/X…','info')"><span class="ri">𝕏</span><span class="rt">Twitter / X</span><span class="ra">@FundiConnectKE</span></li>
+          <li onclick="showToast('Opening Instagram…','info')"><span class="ri">📸</span><span class="rt">Instagram</span><span class="ra">@fundiconnect.ke</span></li>
+          <li onclick="showToast('Copying email…','success')"><span class="ri">📧</span><span class="rt">Email Us Directly</span><span class="ra">support@fundiconnect.ke</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Form -->
+<section class="contact-form-section" id="contact-form">
+  <div class="container">
+    <div class="text-center scroll-reveal" style="margin-bottom:40px">
+      <div class="section-label">✉️ Contact Us</div>
+      <h2>Send Us a Message</h2>
+      <p>Can't find your answer above? Send us a detailed message and we'll respond within 24 hours.</p>
+    </div>
+    <div class="contact-form-wrap scroll-reveal">
+      <form data-validate onsubmit="handleContact(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" class="form-input" placeholder="e.g. Amina Wanjiku" required />
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" class="form-input" placeholder="0712 345 678" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" class="form-input" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>Topic</label>
+          <select class="form-input" required>
+            <option value="">Select a topic…</option>
+            <option>Booking Issue</option>
+            <option>Payment / Refund</option>
+            <option>Fundi Registration</option>
+            <option>Dispute Resolution</option>
+            <option>Account Problem</option>
+            <option>Safety Concern</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Your Message</label>
+          <textarea class="form-input" placeholder="Describe your issue in detail. Include booking IDs if relevant…" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;padding:14px;font-size:1rem;justify-content:center">
+          📨 Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;flex-wrap:wrap;gap:16px">
+      <span style="color:var(--text-muted);font-size:.83rem">© 2025 FundiConnect Kenya</span>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="index.html" style="color:var(--text-muted);font-size:.83rem">Home</a>
+        <a href="about.html" style="color:var(--text-muted);font-size:.83rem">About</a>
+        <a href="privacy.html" style="color:var(--text-muted);font-size:.83rem">Privacy Policy</a>
+        <a href="terms.html" style="color:var(--text-muted);font-size:.83rem">Terms of Use</a>
+        <a href="https://wa.me/254700000000" target="_blank" style="color:#25D366;font-size:.83rem">💬 WhatsApp Us</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container"></div>
+<script src="js/main.js"></script>
+<script src="js/ai-assistant.js"></script>
+<script>
+  /* FAQ toggle */
+  function toggleFAQ(el) {
+    const item = el.closest('.faq-item');
+    item.classList.toggle('open');
+  }
+
+  /* Tab switching */
+  function setFaqTab(tab, el) {
+    document.querySelectorAll('.faq-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.faq-group').forEach(g => g.style.display = 'none');
+    if (el) el.classList.add('active');
+    else document.querySelectorAll('.faq-tab').forEach(t => { if (t.textContent.toLowerCase().includes(tab.split('-')[0])) t.classList.add('active'); });
+    document.querySelector(`[data-group="${tab}"]`)?.style.setProperty('display','block');
+  }
+  setFaqTab('getting-started');
+
+  /* Filter FAQ by search */
+  function filterFAQ(q) {
+    const val = q.toLowerCase().trim();
+    if (!val) { setFaqTab('getting-started'); return; }
+    document.querySelectorAll('.faq-group').forEach(g => g.style.display = 'block');
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(val) ? '' : 'none';
+    });
+  }
+
+  /* Contact form */
+  function handleContact(e) {
+    e.preventDefault();
+    showToast('Message sent! We\'ll reply within 24 hours 📧', 'success');
+    e.target.reset();
+  }
+
+  /* Scroll reveal */
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin:'0px 0px -40px 0px' });
+  document.querySelectorAll('.scroll-reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
