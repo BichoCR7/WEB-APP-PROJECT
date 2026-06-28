@@ -701,3 +701,118 @@
           <div style="font-size:.9rem">+254 700 123 456</div>
           <div style="font-size:.78rem;color:var(--text-muted);margin-top:4px">Mon–Fri 8am–6pm EAT</div>
         </div>
+        <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px">
+          <div style="font-size:1.2rem;margin-bottom:8px">🏢</div>
+          <div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px">Registered Address</div>
+          <div style="font-size:.9rem;line-height:1.65">FundiConnect Kenya Ltd<br>Westlands Business Centre<br>Nairobi, Kenya</div>
+        </div>
+        <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px">
+          <div style="font-size:1.2rem;margin-bottom:8px">⏰</div>
+          <div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px">Response Times</div>
+          <div style="font-size:.9rem;line-height:1.7">General: 24–48 hrs<br>Legal: 5 business days<br>Urgent safety: 4 hrs</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 19. Changes -->
+    <div class="legal-section" id="sec-19">
+      <div class="legal-section-header">
+        <div class="legal-section-icon">🔄</div>
+        <h2>19. Changes to These Terms</h2>
+      </div>
+      <p>FundiConnect may update these Terms of Use from time to time. When we make material changes:</p>
+      <ul>
+        <li>We will update the <strong>"Last updated" date</strong> at the top of this page.</li>
+        <li>We will notify all registered users via <strong>SMS and in-app notification</strong> at least <strong>14 days before</strong> material changes take effect.</li>
+        <li>Your continued use of the Platform after the effective date constitutes your acceptance of the updated Terms.</li>
+        <li>If you do not agree to the updated Terms, you must cease using the Platform and may close your account.</li>
+      </ul>
+
+      <h3>Version History</h3>
+      <table class="version-table">
+        <thead>
+          <tr><th>Version</th><th>Date</th><th>Summary of Changes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>v2.1</td><td>Jan 1, 2025</td><td>Added AI Assistant Terms; updated Escrow section</td></tr>
+          <tr><td>v2.0</td><td>Jul 1, 2024</td><td>Major rewrite; added M-Pesa escrow policy</td></tr>
+          <tr><td>v1.5</td><td>Mar 1, 2024</td><td>Added Fundi ranking tiers and review policy</td></tr>
+          <tr><td>v1.0</td><td>Jan 1, 2024</td><td>Initial Terms of Use published</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Related Links -->
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:28px;text-align:center">
+      <h3 style="margin-bottom:12px">Related Legal Documents</h3>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+        <a href="privacy.html" class="btn btn-outline">🔒 Privacy Policy</a>
+        <a href="support.html" class="btn btn-outline">📞 Support Centre</a>
+        <a href="about.html" class="btn btn-outline">ℹ️ About Us</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-icon" style="width:28px;height:28px;font-size:.9rem">🔧</div>FundiConnect
+        </a>
+        <p>Kenya's trusted platform for verified fundis. Connecting skilled workers with clients across all 47 counties.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="search.html">Find a Fundi</a></li>
+          <li><a href="register.html?role=fundi">Become a Fundi</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="terms.html">Terms of Use</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="support.html">Support</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FundiConnect Kenya Limited. All rights reserved.</span>
+      <span style="color:var(--text-muted);font-size:.78rem">Reg. No. PVT-2024-00123 · KRA PIN: A001234567B</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container"></div>
+<script src="js/main.js"></script>
+<script src="js/ai-chat.js"></script>
+<script>
+  // TOC active highlighting on scroll
+  const sections = document.querySelectorAll('.legal-section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    tocLinks.forEach(l => {
+      l.classList.toggle('active', l.getAttribute('href') === `#${current}`);
+    });
+  }, { passive: true });
+</script>
+</body>
+</html>
