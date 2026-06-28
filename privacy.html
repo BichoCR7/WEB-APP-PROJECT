@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — FundiConnect</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    :root { --blue-light:#79C0FF; --border-blue:rgba(0,122,204,0.35); --radius-xl:24px; }
+    .legal-wrap { max-width:800px; margin:0 auto; padding:120px 24px 80px; }
+    .legal-hero { text-align:center; margin-bottom:56px; padding:40px 0; border-bottom:1px solid var(--border); }
+    .legal-hero .badge-date { font-size:.78rem; font-family:'JetBrains Mono',monospace; color:var(--text-muted); margin-bottom:16px; display:block; }
+    .legal-hero h1 { font-size:2.2rem; font-weight:900; margin-bottom:12px; }
+    .legal-hero p { max-width:520px; margin:0 auto; }
+
+    /* TOC */
+    .toc {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:16px;
+      padding:24px 28px; margin-bottom:48px;
+    }
+    .toc h3 { font-size:.85rem; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:14px; }
+    .toc ol { padding-left:20px; }
+    .toc li { margin-bottom:8px; }
+    .toc a { color:var(--blue-light); font-size:.88rem; }
+    .toc a:hover { color:#fff; }
+
+    /* Sections */
+    .legal-section { margin-bottom:48px; scroll-margin-top:80px; }
+    .legal-section h2 { font-size:1.3rem; font-weight:800; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+    .legal-section p { margin-bottom:14px; font-size:.9rem; line-height:1.8; }
+    .legal-section ul, .legal-section ol { padding-left:22px; margin-bottom:14px; }
+    .legal-section li { font-size:.9rem; line-height:1.8; color:var(--text-secondary); margin-bottom:4px; }
+    .highlight-box {
+      background:rgba(0,122,204,.08); border-left:3px solid var(--blue);
+      border-radius:0 10px 10px 0; padding:16px 20px; margin:16px 0;
+      font-size:.88rem; color:var(--text-secondary);
+    }
+    .highlight-box strong { color:var(--text-primary); }
+    .contact-box {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:14px;
+      padding:24px; margin-top:8px;
+    }
+    .contact-box p { margin:0; }
+
+    /* Side nav (sticky on desktop) */
+    .legal-layout { display:grid; grid-template-columns:220px 1fr; gap:40px; align-items:start; max-width:1100px; margin:0 auto; padding:100px 24px 80px; }
+    .side-nav { position:sticky; top:80px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:20px; }
+    .side-nav h4 { font-size:.75rem; text-transform:uppercase; letter-spacing:.1em; color:var(--text-muted); margin-bottom:12px; }
+    .side-nav a { display:block; padding:7px 10px; border-radius:8px; font-size:.83rem; color:var(--text-secondary); margin-bottom:2px; transition:all .2s; }
+    .side-nav a:hover, .side-nav a.active { background:var(--bg-elevated); color:var(--text-primary); }
+
+    @media(max-width:768px) {
+      .legal-layout { grid-template-columns:1fr; }
+      .side-nav { position:static; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div style="width:32px;height:32px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center">🔧</div>
+      FundiConnect
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="terms.html">Terms</a></li>
+      <li><a href="login.html" class="nav-cta">Get Started</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="legal-layout">
+
+  <!-- Side Nav -->
+  <aside class="side-nav">
+    <h4>Contents</h4>
+    <a href="#overview" onclick="setActive(this)">1. Overview</a>
+    <a href="#data-collected" onclick="setActive(this)">2. Data We Collect</a>
+    <a href="#how-we-use" onclick="setActive(this)">3. How We Use It</a>
+    <a href="#sharing" onclick="setActive(this)">4. Data Sharing</a>
+    <a href="#mpesa" onclick="setActive(this)">5. M-Pesa & Payments</a>
+    <a href="#retention" onclick="setActive(this)">6. Data Retention</a>
+    <a href="#rights" onclick="setActive(this)">7. Your Rights</a>
+    <a href="#cookies" onclick="setActive(this)">8. Cookies</a>
+    <a href="#children" onclick="setActive(this)">9. Children</a>
+    <a href="#changes" onclick="setActive(this)">10. Policy Changes</a>
+    <a href="#contact-us" onclick="setActive(this)">11. Contact Us</a>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <a href="terms.html" style="display:block;padding:10px;background:var(--blue-glow);border-radius:8px;color:var(--blue-light);font-size:.8rem;border:1px solid var(--border-blue)">📋 Terms of Use →</a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero -->
+    <div class="legal-hero" style="text-align:left;border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:36px">
+      <div class="section-label" style="margin-bottom:12px">🔒 Legal</div>
+      <span class="badge-date">Last updated: 1 May 2025 · Effective from: 1 May 2025</span>
+      <h1 style="font-size:2rem">Privacy Policy</h1>
+      <p>This Privacy Policy describes how <strong>FundiConnect Kenya</strong> ("we", "us", or "our") collects, uses, and protects your personal information when you use our platform.</p>
+      <div class="highlight-box" style="margin-top:20px">
+        <strong>TL;DR:</strong> We collect only what we need to run the platform, we never sell your data, and you can request deletion of your data at any time.
+      </div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="legal-section" id="overview">
+      <h2>1. 📌 Overview</h2>
+      <p>FundiConnect operates as a two-sided marketplace connecting clients with skilled tradespeople ("fundis") across Kenya. Our platform involves sharing some personal data to make bookings, payments, and communication work. We take your privacy seriously and are committed to transparency.</p>
+      <p>By creating an account or using our services, you agree to this Privacy Policy. If you do not agree, please do not use our platform.</p>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="legal-section" id="data-collected">
+      <h2>2. 📋 Data We Collect</h2>
+      <p>We collect the following categories of information:</p>
+      <p><strong>Account Information</strong></p>
+      <ul>
+        <li>Full name, phone number, email address</li>
+        <li>Profile photo (for fundis and optionally for clients)</li>
+        <li>Physical location / service area (county and sub-county)</li>
+        <li>Role (Client or Fundi)</li>
+      </ul>
+      <p><strong>Fundi Verification Data</strong></p>
+      <ul>
+        <li>National ID or Passport number and image</li>
+        <li>Skills, certifications, and portfolio photos</li>
+        <li>Years of experience</li>
+      </ul>
+      <p><strong>Usage & Transaction Data</strong></p>
+      <ul>
+        <li>Booking history — dates, services, amounts, statuses</li>
+        <li>M-Pesa transaction references</li>
+        <li>Chat messages exchanged between client and fundi</li>
+        <li>Ratings and reviews submitted</li>
+        <li>Device information (browser type, OS) and IP address</li>
+      </ul>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="legal-section" id="how-we-use">
+      <h2>3. 🎯 How We Use Your Data</h2>
+      <p>We use your data strictly for:</p>
+      <ul>
+        <li>Creating and managing your account</li>
+        <li>Matching clients with suitable fundis based on location, skills, and availability</li>
+        <li>Processing M-Pesa payments and managing escrow</li>
+        <li>Sending SMS/email notifications about bookings</li>
+        <li>Verifying fundi identities and preventing fraud</li>
+        <li>Resolving disputes between clients and fundis</li>
+        <li>Improving our platform based on usage analytics</li>
+        <li>Sending platform updates and promotional offers (you can opt out any time)</li>
+      </ul>
+      <div class="highlight-box">
+        <strong>We will NEVER:</strong> sell your personal data to third parties, use your data for purposes unrelated to our platform, or share your M-Pesa PIN (we never see it — payments go through Safaricom's secure API).
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="legal-section" id="sharing">
+      <h2>4. 🤝 Data Sharing</h2>
+      <p>Your data may be shared with:</p>
+      <ul>
+        <li><strong>Fundis you book:</strong> Your name, phone number, location, and job description are shared with the fundi you've hired, so they can contact you and find your address.</li>
+        <li><strong>Clients who book you:</strong> Fundis' names, phone numbers, service areas, and profile photos are visible to clients.</li>
+        <li><strong>Safaricom M-Pesa:</strong> Transaction amounts and phone numbers are processed through the M-Pesa API. We do not store or see your M-Pesa PIN.</li>
+        <li><strong>Legal authorities:</strong> If required by Kenyan law (e.g., court order or police investigation), we may disclose your data.</li>
+      </ul>
+      <p>We do <strong>not</strong> share your data with advertisers, data brokers, or any third parties for commercial purposes.</p>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="legal-section" id="mpesa">
+      <h2>5. 💳 M-Pesa & Payment Security</h2>
+      <p>Payment processing on FundiConnect is handled through Safaricom's official M-Pesa API (Daraja). Here's how it works:</p>
+      <ul>
+        <li>You initiate an M-Pesa payment from your phone — a Safaricom prompt appears on your device</li>
+        <li>You enter your PIN directly into Safaricom's secure system — <strong>we never see your PIN</strong></li>
+        <li>Safaricom confirms the transaction and sends us a reference code</li>
+        <li>We hold the confirmed amount in escrow until the job is complete</li>
+        <li>On completion, we initiate a B2C payout to the fundi's registered phone number</li>
+      </ul>
+      <p>All payment data is encrypted using HTTPS/TLS during transmission.</p>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="legal-section" id="retention">
+      <h2>6. 🗓️ Data Retention</h2>
+      <p>We retain your data for as long as your account is active. If you delete your account:</p>
+      <ul>
+        <li>Profile data is deleted within <strong>30 days</strong></li>
+        <li>Chat messages are deleted within <strong>30 days</strong></li>
+        <li>Transaction records are retained for <strong>7 years</strong> as required by Kenyan financial regulations</li>
+        <li>Fundi verification documents are deleted within <strong>90 days</strong> of account deletion</li>
+      </ul>
+    </div>
+
+    <!-- Section 7 -->
+    <div class="legal-section" id="rights">
+      <h2>7. ✅ Your Rights</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li><strong>Access</strong> — Request a copy of all personal data we hold about you</li>
+        <li><strong>Correction</strong> — Update or correct inaccurate information in your profile</li>
+        <li><strong>Deletion</strong> — Request deletion of your account and personal data (subject to legal retention requirements)</li>
+        <li><strong>Opt-out</strong> — Unsubscribe from marketing communications at any time via your account settings</li>
+        <li><strong>Portability</strong> — Request your booking and review history in a machine-readable format</li>
+      </ul>
+      <p>To exercise any of these rights, contact us at <a href="mailto:privacy@fundiconnect.ke">privacy@fundiconnect.ke</a> or WhatsApp <a href="https://wa.me/254700000000">+254 700 000 000</a>.</p>
+    </div>
+
+    <!-- Section 8 -->
+    <div class="legal-section" id="cookies">
+      <h2>8. 🍪 Cookies</h2>
+      <p>We use minimal cookies and browser localStorage to:</p>
+      <ul>
+        <li>Keep you logged in (session cookies)</li>
+        <li>Remember your role preference (client/fundi) on the login page</li>
+        <li>Store anonymous analytics data to improve user experience</li>
+      </ul>
+      <p>We do not use advertising cookies or third-party tracking pixels. You can clear cookies at any time via your browser settings — this will log you out of your account.</p>
+    </div>
+
+    <!-- Section 9 -->
+    <div class="legal-section" id="children">
+      <h2>9. 👶 Children's Privacy</h2>
+      <p>FundiConnect is not intended for users under the age of 18. We do not knowingly collect data from minors. If you believe a child has created an account on our platform, please contact us immediately and we will delete the account promptly.</p>
+    </div>
+
+    <!-- Section 10 -->
+    <div class="legal-section" id="changes">
+      <h2>10. 🔄 Changes to This Policy</h2>
+      <p>We may update this Privacy Policy occasionally to reflect changes in our practices or Kenyan law. When we make significant changes, we will:</p>
+      <ul>
+        <li>Update the "Last updated" date at the top of this page</li>
+        <li>Send an SMS notification to all registered users</li>
+        <li>Display a banner in the app for 7 days</li>
+      </ul>
+      <p>Continued use of FundiConnect after changes constitutes acceptance of the updated policy.</p>
+    </div>
+
+    <!-- Section 11 -->
+    <div class="legal-section" id="contact-us">
+      <h2>11. 📞 Contact Us</h2>
+      <p>For privacy-related questions, data access requests, or complaints:</p>
+      <div class="contact-box">
+        <p><strong>FundiConnect Kenya — Privacy Team</strong></p>
+        <p>📧 <a href="mailto:privacy@fundiconnect.ke">privacy@fundiconnect.ke</a></p>
+        <p>💬 <a href="https://wa.me/254700000000">WhatsApp: +254 700 000 000</a></p>
+        <p>📍 Nairobi, Kenya</p>
+        <p style="margin-top:12px;font-size:.8rem;color:var(--text-muted)">We aim to respond to all privacy requests within 72 hours.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:40px;padding:24px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <span style="font-size:.85rem;color:var(--text-secondary)">Also read our Terms of Use for platform rules and responsibilities.</span>
+      <a href="terms.html" class="btn btn-outline" style="padding:10px 20px;font-size:.85rem">📋 Terms of Use →</a>
+    </div>
+  </main>
+
+</div>
+
+<div class="toast-container"></div>
+<script src="js/main.js"></script>
+<script src="js/ai-assistant.js"></script>
+<script>
+  function setActive(el) {
+    document.querySelectorAll('.side-nav a').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
+  }
+  // Auto-highlight based on scroll
+  const sections = document.querySelectorAll('.legal-section');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    document.querySelectorAll('.side-nav a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+</body>
+</html>
