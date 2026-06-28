@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terms of Use — FundiConnect</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    body { padding-top: 68px; }
+
+    /* ── Page Hero ── */
+    .legal-hero {
+      background: linear-gradient(160deg, var(--bg-card), var(--bg-panel));
+      border-bottom: 1px solid var(--border);
+      padding: 56px 0 40px;
+    }
+    .legal-hero .section-tag { display: inline-flex; }
+    .legal-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin: 12px 0; }
+    .legal-hero-meta {
+      display: flex; align-items: center; gap: 20px;
+      flex-wrap: wrap; margin-top: 16px;
+      font-size: .83rem; color: var(--text-muted);
+    }
+    .legal-hero-meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* ── Layout ── */
+    .legal-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Sidebar TOC ── */
+    .toc {
+      position: sticky; top: 90px; height: fit-content;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 20px;
+    }
+    .toc h4 {
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: var(--text-muted); margin-bottom: 14px;
+    }
+    .toc-list { display: flex; flex-direction: column; gap: 2px; }
+    .toc-link {
+      display: block; padding: 7px 10px;
+      border-radius: var(--radius-sm);
+      font-size: .83rem; color: var(--text-secondary);
+      transition: all var(--transition); text-decoration: none;
+      border-left: 2px solid transparent;
+    }
+    .toc-link:hover { color: var(--blue-light); background: var(--blue-glow); border-left-color: var(--blue); }
+    .toc-link.active { color: var(--blue-light); background: var(--blue-glow); border-left-color: var(--blue); font-weight: 600; }
+
+    /* ── Legal Content ── */
+    .legal-content { min-width: 0; }
+
+    .legal-section {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 36px;
+      margin-bottom: 20px;
+      scroll-margin-top: 90px;
+    }
+
+    .legal-section-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 20px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .legal-section-icon {
+      width: 42px; height: 42px; border-radius: var(--radius-sm);
+      background: var(--blue-glow); border: 1px solid var(--border-blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .legal-section h2 {
+      font-size: 1.2rem; font-weight: 700;
+    }
+    .legal-section p {
+      font-size: .91rem; line-height: 1.85;
+      color: var(--text-secondary); margin-bottom: 14px;
+    }
+    .legal-section p:last-child { margin-bottom: 0; }
+
+    .legal-section ul, .legal-section ol {
+      padding-left: 0; display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 14px;
+    }
+    .legal-section ul li, .legal-section ol li {
+      font-size: .9rem; color: var(--text-secondary);
+      line-height: 1.75; padding-left: 1.5em;
+      position: relative;
+    }
+    .legal-section ul li::before {
+      content: '›'; position: absolute; left: 0;
+      color: var(--blue-light); font-weight: 700;
+    }
+    
