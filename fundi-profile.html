@@ -1,0 +1,447 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>John Kamau — Electrician | FundiConnect</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    body { padding-top:68px; }
+    .profile-hero {
+      background:var(--bg-card); border-bottom:1px solid var(--border); padding:40px 0;
+    }
+    .profile-top { display:flex; gap:32px; align-items:flex-start; }
+    .profile-avatar-wrap { position:relative; flex-shrink:0; }
+    .profile-avatar-big {
+      width:110px; height:110px; border-radius:50%;
+      background:linear-gradient(135deg,var(--blue),var(--green));
+      display:flex; align-items:center; justify-content:center;
+      font-size:2.8rem; font-weight:800; color:#fff;
+      border:4px solid var(--bg-card);
+    }
+    .profile-verified-badge {
+      position:absolute; bottom:4px; right:4px;
+      background:var(--green); color:#fff;
+      width:26px; height:26px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.75rem; border:2px solid var(--bg-card);
+    }
+    .profile-info { flex:1; }
+    .profile-info h1 { font-size:1.8rem; margin-bottom:4px; }
+    .profile-meta { display:flex; flex-wrap:wrap; gap:14px; margin:12px 0; }
+    .profile-meta-item { display:flex; align-items:center; gap:6px; font-size:.85rem; color:var(--text-secondary); }
+    .profile-actions { display:flex; gap:12px; flex-wrap:wrap; }
+    .profile-layout { display:grid; grid-template-columns:1fr 340px; gap:28px; }
+    .profile-section { margin-bottom:32px; }
+    .profile-section h3 { font-size:1.05rem; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+    .skill-list { display:flex; flex-wrap:wrap; gap:8px; }
+    .skill-badge { background:var(--bg-elevated); border:1px solid var(--border); color:var(--text-secondary); font-size:.82rem; padding:6px 14px; border-radius:100px; }
+    .review-item { padding:20px 0; border-bottom:1px solid var(--border); }
+    .review-item:last-child { border-bottom:none; }
+    .review-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+    .review-text { font-size:.9rem; line-height:1.7; color:var(--text-secondary); }
+    .gallery { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .gallery-img {
+      aspect-ratio:1; border-radius:var(--radius-sm); overflow:hidden;
+      background:var(--bg-elevated); display:flex; align-items:center; justify-content:center;
+      font-size:2rem; color:var(--text-muted); border:1px solid var(--border);
+    }
+    /* Sidebar */
+    .booking-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-md); padding:24px; position:sticky; top:90px; }
+    .price-row { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:16px; }
+    .price-big { font-size:1.8rem; font-weight:800; font-family:var(--mono); color:var(--green); }
+    .price-unit { font-size:.85rem; color:var(--text-muted); }
+    .availability-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-bottom:16px; }
+    .avail-slot {
+      background:var(--bg-elevated); border:1px solid var(--border);
+      border-radius:var(--radius-sm); padding:8px 4px;
+      text-align:center; font-size:.72rem; cursor:pointer; transition:all .2s;
+    }
+    .avail-slot.avail { cursor:pointer; }
+    .avail-slot.avail:hover, .avail-slot.selected { background:var(--blue-glow); border-color:var(--blue); color:var(--blue-light); }
+    .avail-slot.busy { opacity:.4; cursor:not-allowed; text-decoration:line-through; }
+    @media(max-width:960px) {
+      .profile-layout { grid-template-columns:1fr; }
+      .booking-card { position:static; }
+    }
+    @media(max-width:600px) {
+      .profile-top { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">🔧</div>FundiConnect</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="search.html">Find a Fundi</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-ghost btn-sm">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+    </div>
+    <button class="nav-toggle">☰</button>
+  </div>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Home</a><a href="search.html">Find a Fundi</a>
+  <a href="login.html">Login</a>
+</div>
+
+<!-- Profile Hero -->
+<div class="profile-hero">
+  <div class="container">
+    <div style="margin-bottom:16px;font-size:.85rem">
+      <a href="index.html" style="color:var(--text-muted)">Home</a>
+      <span style="color:var(--text-muted);margin:0 8px">›</span>
+      <a href="search.html" style="color:var(--text-muted)">Find a Fundi</a>
+      <span style="color:var(--text-muted);margin:0 8px">›</span>
+      <span>John Kamau</span>
+    </div>
+    <div class="profile-top">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar-big">JK</div>
+        <div class="profile-verified-badge">✓</div>
+      </div>
+      <div class="profile-info">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <h1>John Kamau</h1>
+          <span class="badge badge-green">✅ ID Verified</span>
+          <span class="badge badge-gold">🥇 Elite Fundi</span>
+        </div>
+        <div style="margin-top:6px;color:var(--blue-light);font-weight:600">⚡ Electrician</div>
+        <div class="profile-meta">
+          <div class="profile-meta-item">
+            <div class="stars">
+              <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+              <span class="star">★</span><span class="star">★</span>
+            </div>
+            <strong style="color:var(--text-primary)">4.9</strong>
+            <span>(128 reviews)</span>
+          </div>
+          <div class="profile-meta-item">🏗️ 246 jobs completed</div>
+          <div class="profile-meta-item">📍 Westlands, Nairobi</div>
+          <div class="profile-meta-item">🕐 Member since Jan 2022</div>
+          <div class="profile-meta-item">
+            <div class="status-dot online"></div>
+            <span style="color:var(--green)">Online now</span>
+          </div>
+        </div>
+        <div class="profile-actions">
+          <button class="btn btn-primary" data-modal-open="book-modal">📋 Book Now</button>
+          <button class="btn btn-outline" data-modal-open="chat-modal">💬 Message</button>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Saved to favourites!','success')">🤍 Save</button>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Report submitted','info')">🚩 Report</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container section-sm">
+  <div class="profile-layout">
+    <!-- Left: Info -->
+    <div>
+      <!-- About -->
+      <div class="profile-section card">
+        <h3>About John</h3>
+        <p style="font-size:.92rem;line-height:1.8;color:var(--text-secondary)">
+          I'm a certified electrician with over 7 years of experience working across residential and commercial properties in Nairobi. I specialize in full wiring installations, solar systems, CCTV setup, and all kinds of electrical repairs.
+          <br><br>
+          I always provide a quote upfront, I clean up after work, and I don't leave until the job is done right. My clients trust me because I'm honest and I never overcharge.
+        </p>
+      </div>
+
+      <!-- Skills -->
+      <div class="profile-section card mt-16">
+        <h3>Skills & Services</h3>
+        <div class="skill-list">
+          <span class="skill-badge">⚡ Full House Wiring</span>
+          <span class="skill-badge">☀️ Solar Installation</span>
+          <span class="skill-badge">📷 CCTV Setup</span>
+          <span class="skill-badge">🔌 Power Extensions</span>
+          <span class="skill-badge">💡 Lighting Setup</span>
+          <span class="skill-badge">🔧 Electrical Repairs</span>
+          <span class="skill-badge">🏗️ DB Box Installation</span>
+          <span class="skill-badge">🔋 Inverter Systems</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="grid-3" style="margin-top:16px;gap:12px">
+          <div style="text-align:center;padding:14px;background:var(--bg-elevated);border-radius:var(--radius-sm)">
+            <div style="font-size:1.4rem;font-weight:800;color:var(--blue-light)">246</div>
+            <div style="font-size:.78rem;color:var(--text-muted)">Jobs Done</div>
+          </div>
+          <div style="text-align:center;padding:14px;background:var(--bg-elevated);border-radius:var(--radius-sm)">
+            <div style="font-size:1.4rem;font-weight:800;color:var(--orange)">7+</div>
+            <div style="font-size:.78rem;color:var(--text-muted)">Years Exp.</div>
+          </div>
+          <div style="text-align:center;padding:14px;background:var(--bg-elevated);border-radius:var(--radius-sm)">
+            <div style="font-size:1.4rem;font-weight:800;color:var(--green)">98%</div>
+            <div style="font-size:.78rem;color:var(--text-muted)">Repeat Clients</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Work Gallery -->
+      <div class="profile-section card mt-16">
+        <h3>Work Gallery</h3>
+        <div class="gallery">
+          <div class="gallery-img">⚡</div>
+          <div class="gallery-img">🔌</div>
+          <div class="gallery-img">☀️</div>
+          <div class="gallery-img">📷</div>
+          <div class="gallery-img">💡</div>
+          <div class="gallery-img">🔧</div>
+        </div>
+        <p style="font-size:.78rem;color:var(--text-muted);margin-top:10px">6 photos of completed work</p>
+      </div>
+
+      <!-- Reviews -->
+      <div class="profile-section card mt-16">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <h3 style="margin:0;border:none;padding:0">Reviews (128)</h3>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="stars">
+              <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+              <span class="star">★</span><span class="star">★</span>
+            </div>
+            <strong style="font-size:1.3rem">4.9</strong>
+          </div>
+        </div>
+
+        <!-- Rating breakdown -->
+        <div style="margin-bottom:24px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <span style="font-size:.8rem;width:32px">5 ★</span>
+            <div class="progress-bar" style="flex:1"><div class="progress-fill" data-width="88%" style="width:88%"></div></div>
+            <span style="font-size:.8rem;color:var(--text-muted);width:32px">88%</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <span style="font-size:.8rem;width:32px">4 ★</span>
+            <div class="progress-bar" style="flex:1"><div class="progress-fill" data-width="9%" style="width:9%;background:var(--orange)"></div></div>
+            <span style="font-size:.8rem;color:var(--text-muted);width:32px">9%</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:.8rem;width:32px">3 ★</span>
+            <div class="progress-bar" style="flex:1"><div class="progress-fill" data-width="3%" style="width:3%;background:var(--red)"></div></div>
+            <span style="font-size:.8rem;color:var(--text-muted);width:32px">3%</span>
+          </div>
+        </div>
+
+        <!-- Review items -->
+        <div class="review-item">
+          <div class="review-header">
+            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#8B5CF6,#EC4899)">AG</div>
+            <div>
+              <div style="font-weight:700;font-size:.88rem">Amina Guyo</div>
+              <div style="font-size:.75rem;color:var(--text-muted)">2 weeks ago · Wiring job</div>
+            </div>
+            <div class="stars" style="margin-left:auto">
+              <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+              <span class="star">★</span><span class="star">★</span>
+            </div>
+          </div>
+          <p class="review-text">Excellent work! John arrived on time, explained everything clearly, and fixed all the wiring issues in our new apartment. Very clean work. Will definitely call him again.</p>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header">
+            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#10B981,#06B6D4)">BM</div>
+            <div>
+              <div style="font-weight:700;font-size:.88rem">Brian Mutua</div>
+              <div style="font-size:.75rem;color:var(--text-muted)">1 month ago · Solar install</div>
+            </div>
+            <div class="stars" style="margin-left:auto">
+              <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+              <span class="star">★</span><span class="star">★</span>
+            </div>
+          </div>
+          <p class="review-text">Installed our 3-panel solar system perfectly. Very knowledgeable. Gave us a fair price and the system has been working flawlessly for a month now.</p>
+        </div>
+
+        <button class="btn btn-ghost btn-full" style="margin-top:16px" onclick="showToast('Loading more reviews…','info')">Load More Reviews</button>
+      </div>
+    </div>
+
+    <!-- Right: Booking sidebar -->
+    <div>
+      <div class="booking-card">
+        <div class="price-row">
+          <div>
+            <div class="price-big">Ksh 800</div>
+            <div class="price-unit">per hour</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:.78rem;color:var(--text-muted)">Fixed price</div>
+            <div style="font-size:.82rem;color:var(--green);font-weight:600">+ Free quote</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h4 style="font-size:.85rem;margin-bottom:12px;color:var(--text-secondary)">Available This Week</h4>
+        <div class="availability-grid">
+          <div class="avail-slot avail">Mon<br><strong>9am</strong></div>
+          <div class="avail-slot busy">Mon<br><strong>2pm</strong></div>
+          <div class="avail-slot avail selected">Tue<br><strong>10am</strong></div>
+          <div class="avail-slot avail">Tue<br><strong>3pm</strong></div>
+          <div class="avail-slot avail">Wed<br><strong>8am</strong></div>
+          <div class="avail-slot busy">Wed<br><strong>1pm</strong></div>
+          <div class="avail-slot avail">Thu<br><strong>9am</strong></div>
+          <div class="avail-slot avail">Fri<br><strong>11am</strong></div>
+        </div>
+
+        <button class="btn btn-primary btn-full btn-lg" style="margin-top:16px" data-modal-open="book-modal">
+          📋 Book John Now
+        </button>
+        <button class="btn btn-outline btn-full" style="margin-top:10px" data-modal-open="chat-modal">
+          💬 Send Message First
+        </button>
+
+        <div class="divider"></div>
+
+        <div style="font-size:.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px">✅ Free cancellation (24hrs)</div>
+          <div style="display:flex;align-items:center;gap:8px">💳 Pay after job is done</div>
+          <div style="display:flex;align-items:center;gap:8px">📞 Fundi calls before arriving</div>
+          <div style="display:flex;align-items:center;gap:8px">🛡️ FundiConnect Guarantee</div>
+        </div>
+      </div>
+
+      <!-- Fundi stats card -->
+      <div class="card mt-16">
+        <h4 style="margin-bottom:16px">Response Stats</h4>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:.85rem">
+          <div class="flex-between"><span>Response time</span><strong style="color:var(--green)">~15 minutes</strong></div>
+          <div class="flex-between"><span>Acceptance rate</span><strong style="color:var(--green)">94%</strong></div>
+          <div class="flex-between"><span>On-time arrival</span><strong style="color:var(--green)">97%</strong></div>
+          <div class="flex-between"><span>Job completion</span><strong style="color:var(--green)">99%</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BOOKING MODAL ── -->
+<div class="modal-overlay" id="book-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Book John Kamau</h3>
+      <button class="modal-close" data-modal-close>✕</button>
+    </div>
+    <form data-validate data-action="book">
+      <div class="form-group">
+        <label class="form-label">Service Needed *</label>
+        <select class="form-input" name="service" required>
+          <option>Full House Wiring</option>
+          <option>Solar Installation</option>
+          <option>CCTV Setup</option>
+          <option>Electrical Repair</option>
+          <option>DB Box</option>
+          <option>Other (describe below)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Describe the Job *</label>
+        <textarea class="form-input" name="description" placeholder="Tell John what needs to be done, any specific problems, etc." required></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <input class="form-input" type="date" name="date" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Preferred Time *</label>
+          <select class="form-input" name="time" required>
+            <option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option>
+            <option>11:00 AM</option><option>12:00 PM</option><option>2:00 PM</option>
+            <option>3:00 PM</option><option>4:00 PM</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your Full Address *</label>
+        <input class="form-input" type="text" name="address" placeholder="House/apt number, street, estate, Nairobi" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Method</label>
+        <div style="display:flex;gap:8px">
+          <label style="flex:1;cursor:pointer">
+            <input type="radio" name="payment" value="mpesa" checked style="display:none" />
+            <div class="avail-slot avail" style="padding:12px;text-align:center" id="pay-mpesa" onclick="selectPay('mpesa')">📱 M-Pesa</div>
+          </label>
+          <label style="flex:1;cursor:pointer">
+            <input type="radio" name="payment" value="cash" style="display:none" />
+            <div class="avail-slot avail" style="padding:12px;text-align:center" id="pay-cash" onclick="selectPay('cash')">💵 Cash</div>
+          </label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full btn-lg">Send Booking Request →</button>
+      <p style="font-size:.75rem;color:var(--text-muted);text-align:center;margin-top:10px">John will confirm within 15 minutes. No payment until job is done.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ── CHAT MODAL ── -->
+<div class="modal-overlay" id="chat-modal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="avatar avatar-md" style="background:linear-gradient(135deg,var(--blue),var(--green));color:#fff;font-size:1rem">JK</div>
+        <div>
+          <div style="font-weight:700">John Kamau</div>
+          <div style="font-size:.78rem;color:var(--green);display:flex;align-items:center;gap:5px">
+            <div class="status-dot online"></div> Online now
+          </div>
+        </div>
+      </div>
+      <button class="modal-close" data-modal-close>✕</button>
+    </div>
+    <div class="chat-window" style="height:320px;border:none;border-radius:0">
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-msg">
+          <div class="avatar avatar-sm" style="background:linear-gradient(135deg,var(--blue),var(--green));color:#fff;font-size:.8rem">JK</div>
+          <div>
+            <div class="chat-bubble">Karibu! Niambie kazi gani unaitaka. Niko available sasa. 😊</div>
+            <div class="chat-time">Just now</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input class="form-input chat-input" type="text" placeholder="Type a message…" />
+        <button class="btn btn-primary chat-send-btn">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer" style="margin-top:0">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 FundiConnect Kenya</span>
+      <a href="search.html" style="color:var(--blue-light)">← Back to Search</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container"></div>
+<script src="js/main.js"></script>
+<script>
+  document.querySelectorAll('.avail-slot.avail').forEach(s => {
+    s.addEventListener('click', () => {
+      s.closest('.availability-grid')?.querySelectorAll('.avail-slot').forEach(x => x.classList.remove('selected'));
+      s.classList.add('selected');
+    });
+  });
+  function selectPay(type) {
+    document.getElementById('pay-mpesa').classList.toggle('selected', type === 'mpesa');
+    document.getElementById('pay-cash').classList.toggle('selected', type === 'cash');
+  }
+  selectPay('mpesa');
+</script>
+</body>
+</html>
