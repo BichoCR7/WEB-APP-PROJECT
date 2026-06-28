@@ -98,4 +98,78 @@
       content: '›'; position: absolute; left: 0;
       color: var(--blue-light); font-weight: 700;
     }
-    
+    .legal-section ol { counter-reset: item; }
+    .legal-section ol li::before {
+      content: counter(item) "."; counter-increment: item;
+      position: absolute; left: 0;
+      color: var(--blue-light); font-weight: 700; font-size: .85rem;
+    }
+
+    .legal-section h3 {
+      font-size: 1rem; margin: 20px 0 10px;
+      color: var(--text-primary);
+    }
+
+    .legal-highlight {
+      background: rgba(37,99,235,.08); border: 1px solid rgba(37,99,235,.2);
+      border-left: 3px solid var(--blue); border-radius: var(--radius-sm);
+      padding: 14px 16px; margin: 16px 0;
+      font-size: .88rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .legal-highlight.warning {
+      background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.2);
+      border-left-color: var(--orange);
+    }
+    .legal-highlight.danger {
+      background: rgba(239,68,68,.08); border-color: rgba(239,68,68,.2);
+      border-left-color: var(--red);
+    }
+
+    /* ── Acceptance Banner ── */
+    .accept-banner {
+      background: linear-gradient(135deg, rgba(16,185,129,.1), rgba(37,99,235,.05));
+      border: 1px solid rgba(16,185,129,.25);
+      border-radius: var(--radius-lg); padding: 32px 40px;
+      text-align: center; margin-bottom: 40px;
+    }
+    .accept-banner h2 { font-size: 1.3rem; margin-bottom: 8px; }
+    .accept-banner p  { max-width: 520px; margin: 0 auto 20px; font-size: .9rem; }
+
+    /* ── Version table ── */
+    .version-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    .version-table th { text-align: left; padding: 10px 12px; background: var(--bg-elevated); color: var(--text-muted); font-weight: 700; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--border); }
+    .version-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+    .version-table tr:last-child td { border-bottom: none; }
+
+    @media(max-width: 900px) {
+      .legal-layout { grid-template-columns: 1fr; }
+      .toc { display: none; }
+    }
+    @media(max-width: 600px) {
+      .legal-section { padding: 24px; }
+      .accept-banner { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">🔧</div> FundiConnect
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="search.html">Find a Fundi</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-ghost btn-sm">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Get Started</a>
+    </div>
+    <button class="nav-toggle">☰</button>
+  </div>
+</nav>
+<div class="mobile-menu">
