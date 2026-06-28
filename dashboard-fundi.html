@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fundi Dashboard — FundiConnect</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Shared variables matching admin.html exactly ── */
+    :root {
+      --sidebar-w: 240px;
+      --red:        #F85149;
+      --amber:      #E3B341;
+      --blue-light: #79C0FF;
+      --border-blue: rgba(0,122,204,0.35);
+      --radius-xl:  20px;
+      --shadow-lg:  0 20px 60px rgba(0,0,0,0.5);
+      --orange:     #CE9178;
+    }
+    body { display:flex; min-height:100vh; padding:0; background:var(--bg-dark); }
+
+    /* ══ SIDEBAR — identical to admin.html ══ */
+    .sidebar {
+      width:var(--sidebar-w);
+      background:var(--bg-panel);
+      border-right:1px solid var(--border);
+      display:flex; flex-direction:column;
+      position:fixed; top:0; left:0; bottom:0;
+      z-index:200; overflow-y:auto;
+    }
+    .sidebar-brand {
+      padding:20px 20px 16px;
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:center; gap:10px;
+    }
+    .sidebar-brand .logo-icon {
+      width:34px; height:34px; border-radius:8px;
+      background:var(--blue);
+      display:flex; align-items:center; justify-content:center; font-size:1rem;
+    }
+    .sidebar-brand span { font-weight:800; font-size:1rem; }
+
+    .sidebar-user {
+      padding:16px 20px; border-bottom:1px solid var(--border);
+      display:flex; align-items:center; gap:12px;
+    }
+    .sidebar-avatar {
+      width:40px; height:40px; border-radius:50%; flex-shrink:0;
+      background:linear-gradient(135deg,var(--blue),var(--green));
+      display:flex; align-items:center; justify-content:center;
+      font-size:.9rem; font-weight:700; color:#fff; position:relative;
+    }
+    .status-ring {
+      position:absolute; bottom:0; right:0; width:11px; height:11px;
+      border-radius:50%; border:2px solid var(--bg-panel); background:var(--green);
+    }
+    .status-ring.busy { background:var(--amber); }
+    .sidebar-user-info small { display:block; font-size:.7rem; color:var(--text-muted); margin-top:1px; }
+    .sidebar-user-info strong { font-size:.85rem; }
+
+    .sidebar-label {
+      font-size:.68rem; font-weight:700; letter-spacing:.1em;
+      text-transform:uppercase; color:var(--text-muted);
+      padding:20px 20px 8px;
+    }
+    .sidebar-nav { list-style:none; padding:0 10px; }
+    .sidebar-nav li a {
+      display:flex; align-items:center; gap:12px; padding:10px 12px;
+      border-radius:8px; color:var(--text-secondary);
+      font-size:.88rem; font-weight:500;
+      transition:all .2s; text-decoration:none; cursor:pointer;
+    }
+    .sidebar-nav li a:hover { background:var(--bg-elevated); color:var(--text-primary); }
+    .sidebar-nav li a.active {
+      color:var(--blue-light); background:var(--blue-glow);
+    }
+    .sidebar-nav li a .icon { font-size:1.1rem; width:20px; text-align:center; }
+    .nav-badge-pill {
+      margin-left:auto; background:var(--red); color:#fff;
+      font-size:.65rem; font-weight:700; padding:2px 7px;
+      border-radius:100px; min-width:20px; text-align:center;
+    }
+    .sidebar-footer {
+      margin-top:auto; padding:16px;
+      border-top:1px solid var(--border);
+    }
+
+    /* ══ MAIN — identical to admin.html ══ */
+    .admin-main {
+      margin-left:var(--sidebar-w); flex:1;
+      padding:28px 32px; min-height:100vh;
+    }
+    .admin-topbar {
+      display:flex; align-items:center;
+      justify-content:space-between; margin-bottom:28px;
+    }
+    .topbar-title h1 { font-size:1.5rem; font-weight:800; }
+    .topbar-title p  { font-size:.85rem; color:var(--text-muted); margin-top:2px; }
+    .topbar-actions { display:flex; align-items:center; gap:12px; }
+    .notif-btn {
+      position:relative; width:40px; height:40px; border-radius:10px;
+      background:var(--bg-card); border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; font-size:1.1rem;
+    }
+    .notif-dot {
+      position:absolute; top:6px; right:6px; width:8px; height:8px;
+      background:var(--red); border-radius:50%; border:2px solid var(--bg-dark);
+    }
+
+    /* ══ STAT CARDS — identical to admin.html ══ */
+    .stats-row {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:16px; margin-bottom:24px;
+    }
+    .stat-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-md); padding:20px;
+      position:relative; overflow:hidden; transition:all .2s;
+    }
+    .stat-card:hover { border-color:var(--blue); transform:translateY(-2px); }
+    .stat-card::before {
+      content:''; position:absolute; top:0; right:0;
+      width:80px; height:80px; border-radius:50%; opacity:.08;
+      background:var(--accent-color, var(--blue));
+      transform:translate(30px,-30px);
+    }
+    .stat-icon  { font-size:1.4rem; margin-bottom:12px; }
+    .stat-value {
+      font-size:1.9rem; font-weight:800;
+      font-family:'JetBrains Mono',monospace;
+    }
+    .stat-label { font-size:.8rem; color:var(--text-muted); margin-top:4px; }
+    .stat-trend { display:flex; align-items:center; gap:4px; font-size:.78rem; margin-top:8px; font-weight:600; }
+    .trend-up   { color:var(--green); }
+    .trend-down { color:var(--red); }
+    .trend-neutral { color:var(--text-muted); }
+
+    /* ══ PANELS — identical to admin.html ══ */
+    .admin-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px; }
+    .admin-panel {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-md); overflow:hidden;
+    }
+    .panel-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 22px; border-bottom:1px solid var(--border);
+    }
+    .panel-header h3 { font-size:.95rem; font-weight:700; }
+    .panel-body { padding:18px 22px; }
+    .panel-full { grid-column:1/-1; }
+
+    /* ══ STATUS BADGES — identical to admin.html ══ */
+    .status {
+      display:inline-flex; align-items:center; gap:5px;
+      font-size:.75rem; font-weight:600; padding:3px 10px; border-radius:100px;
+    }
+    .status::before { content:''; width:6px; height:6px; border-radius:50%; background:currentColor; }
+    .status-pending   { background:rgba(227,179,65,.15);  color:var(--amber); }
+    .status-active    { background:rgba(78,201,176,.15);  color:var(--green); }
+    .status-completed { background:rgba(78,201,176,.15);  color:var(--green); }
+    .status-new       { background:rgba(0,122,204,.15);   color:var(--blue-light); }
+    .status-declined  { background:rgba(248,81,73,.15);   color:var(--red); }
+
+    /* ══ ACTION BUTTONS — identical to admin.html ══ */
+    .action-btns { display:flex; gap:6px; flex-wrap:wrap; }
+    .act {
+      padding:6px 14px; border-radius:6px; font-size:.8rem;
+      font-weight:600; cursor:pointer; border:1px solid transparent;
+      transition:all .2s; font-family:'DM Sans',sans-serif;
+    }
+    .act-approve { background:rgba(78,201,176,.15);  color:var(--green);      border-color:rgba(78,201,176,.3); }
+    .act-approve:hover { background:rgba(78,201,176,.3); }
+    .act-reject  { background:rgba(248,81,73,.1);    color:var(--red);        border-color:rgba(248,81,73,.25); }
+    .act-reject:hover  { background:rgba(248,81,73,.2); }
+    .act-view    { background:var(--bg-elevated);    color:var(--text-secondary); border-color:var(--border); }
+    .act-view:hover { color:var(--text-primary); }
+    .act-primary { background:var(--blue);           color:#fff;              border-color:var(--blue); }
+    .act-primary:hover { background:var(--blue-bright); }
+    .act-green   { background:rgba(78,201,176,.15);  color:var(--green);      border-color:rgba(78,201,176,.3); }
+
+    /* ══ TABS — identical to admin.html ══ */
+    .tab-row {
+      display:flex; gap:4px; padding:4px;
+      background:var(--bg-elevated); border-radius:10px; margin-bottom:20px;
+    }
+    .tab-btn {
+      flex:1; padding:8px 12px; border-radius:8px; border:none;
+      background:none; color:var(--text-secondary);
+      font-size:.83rem; font-weight:600; cursor:pointer;
+      transition:all .2s; font-family:'DM Sans',sans-serif;
+    }
+    .tab-btn.active {
+      background:var(--bg-card); color:var(--text-primary);
+      box-shadow:0 1px 4px rgba(0,0,0,.3);
+    }
+    .tab-pane { display:none; }
+    .tab-pane.active { display:block; }
+
+    /* ══ JOB CARDS ══ */
+    .job-card {
+      background:var(--bg-elevated); border:1px solid var(--border);
+      border-radius:12px; padding:18px 20px;
+      display:flex; gap:16px; align-items:flex-start; margin-bottom:12px;
+      transition:border-color .2s;
+    }
+    .job-card:hover { border-color:rgba(0,122,204,.4); }
+    .job-card.active-job { border-color:rgba(78,201,176,.35); }
+    .job-icon {
+      width:46px; height:46px; border-radius:12px; flex-shrink:0;
+      background:var(--blue-glow); border:1px solid var(--border-blue);
+      display:flex; align-items:center; justify-content:center; font-size:1.3rem;
+    }
+    .job-icon.green { background:rgba(78,201,176,.12); border-color:rgba(78,201,176,.3); }
+    .job-body { flex:1; min-width:0; }
+    .job-title  { font-weight:700; font-size:.9rem; margin-bottom:5px; }
+    .job-meta   { font-size:.78rem; color:var(--text-muted); display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+    .job-desc   { font-size:.84rem; color:var(--text-secondary); line-height:1.6; margin-bottom:12px; }
+    .job-amount { font-size:.9rem; font-weight:800; color:var(--green); flex-shrink:0; white-space:nowrap; font-family:'JetBrains Mono',monospace; }
+
+    /* ══ EARNINGS CHART ══ */
+    .chart-bar-wrap { display:flex; align-items:flex-end; gap:6px; height:110px; padding:8px 0; }
+    .chart-bar-col  { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; }
+    .chart-bar {
+      width:100%; border-radius:4px 4px 0 0;
+      background:var(--blue-glow); border:1px solid var(--border-blue);
+      transition:height .5s ease; position:relative; cursor:pointer;
+    }
+    .chart-bar:hover { background:rgba(0,122,204,.4); }
+    .chart-bar.highlight { background:linear-gradient(180deg,var(--blue) 0%,rgba(0,122,204,.3) 100%); border-color:var(--blue); }
+    .chart-lbl { font-size:.7rem; color:var(--text-muted); }
+    .chart-tooltip {
+      position:absolute; top:-30px; left:50%; transform:translateX(-50%);
+      background:var(--bg-elevated); border:1px solid var(--border);
+      border-radius:6px; padding:2px 8px; font-size:.72rem;
+      white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s;
+    }
+    .chart-bar:hover .chart-tooltip { opacity:1; }
+
+    /* ══ CALENDAR ══ */
+    .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:16px; }
+    .cal-header { text-align:center; font-size:.72rem; color:var(--text-muted); font-weight:700; padding:4px 0; }
+    .cal-day {
+      aspect-ratio:1; border-radius:8px; display:flex;
+      align-items:center; justify-content:center; font-size:.8rem;
+      cursor:pointer; transition:all .2s;
+      background:var(--bg-elevated); border:1px solid var(--border); color:var(--text-secondary);
+    }
+    .cal-day:hover { border-color:var(--blue); color:var(--text-primary); }
+    .cal-day.available { background:rgba(78,201,176,.1); border-color:rgba(78,201,176,.3); color:var(--green); }
+    .cal-day.busy      { background:rgba(248,81,73,.1);   border-color:rgba(248,81,73,.3);  color:var(--red); }
+    .cal-day.today     { background:var(--blue-glow); border-color:var(--blue); color:var(--blue-light); font-weight:800; }
+    .cal-day.empty     { background:none; border:none; cursor:default; }
+
+    /* ══ RANK PROGRESS ══ */
+    .rank-bar-bg { background:var(--bg-elevated); border-radius:100px; height:8px; width:100%; }
+    .rank-bar-fill { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--blue),var(--blue-bright)); transition:width 1s ease; }
+
+    /* ══ WITHDRAW CARD ══ */
+    .withdraw-band {
+      background:linear-gradient(135deg,rgba(78,201,176,.12),rgba(0,122,204,.08));
+      border:1px solid rgba(78,201,176,.25); border-radius:var(--radius-md);
+      padding:24px 28px; margin-bottom:24px;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;
+    }
+    .balance-val { font-size:2.4rem; font-weight:800; font-family:'JetBrains Mono',monospace; color:var(--green); }
+
+    /* ══ PAYOUT TABLE — uses admin's data-table ══ */
+    .data-table { width:100%; border-collapse:collapse; font-size:.85rem; }
+    .data-table th {
+      text-align:left; padding:10px 14px; font-size:.75rem; font-weight:700;
+      letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted);
+      border-bottom:1px solid var(--border); background:var(--bg-elevated);
+    }
+    .data-table td { padding:12px 14px; border-bottom:1px solid var(--border-subtle); vertical-align:middle; }
+    .data-table tr:last-child td { border-bottom:none; }
+    .data-table tr:hover td { background:rgba(255,255,255,.02); }
+
+    /* ══ PORTFOLIO ══ */
+    .portfolio-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:14px; }
+    .portfolio-item {
+      aspect-ratio:1; border-radius:10px; display:flex;
+      align-items:center; justify-content:center; font-size:1.8rem;
+      background:var(--bg-elevated); border:1px solid var(--border);
+      cursor:pointer; transition:all .2s; color:var(--text-muted);
+    }
+    .portfolio-item:hover { border-color:var(--blue); }
+    .portfolio-item.add { border:2px dashed var(--border); background:none; font-size:1.4rem; }
+    .portfolio-item.add:hover { border-color:var(--blue); color:var(--blue-light); }
+
+    /* ══ UPLOAD ZONE ══ */
+    .upload-zone {
+      border:2px dashed var(--border); border-radius:var(--radius-md);
+      padding:28px; text-align:center; cursor:pointer; transition:all .2s;
+    }
+    .upload-zone:hover { border-color:var(--blue); background:var(--blue-glow); }
+
+    /* ══ FORM INPUTS ══ */
+    .form-label { display:block; margin-bottom:6px; font-size:.83rem; font-weight:600; color:var(--text-secondary); }
+    .form-group { margin-bottom:16px; }
+    .form-input {
+      width:100%; padding:10px 14px; background:var(--bg-elevated);
+      border:1px solid var(--border); border-radius:9px; color:var(--text-primary);
+      font-size:.88rem; font-family:'DM Sans',sans-serif; outline:none; transition:border-color .2s;
+    }
+    .form-input:focus { border-color:var(--blue); }
+    textarea.form-input { resize:vertical; }
+    select.form-input { cursor:pointer; }
+
+    /* ══ MESSAGES / CHAT ══ */
+    .chat-layout {
+      display:grid; grid-template-columns:240px 1fr;
+      height:520px; border:1px solid var(--border); border-radius:var(--radius-md); overflow:hidden;
+    }
+    .chat-list { border-right:1px solid var(--border); overflow-y:auto; }
+    .chat-contact {
+      display:flex; gap:10px; align-items:center; padding:14px 16px;
+      border-bottom:1px solid var(--border); cursor:pointer; transition:background .2s;
+    }
+    .chat-contact:hover { background:var(--bg-elevated); }
+    .chat-contact.active { background:var(--blue-glow); border-left:2px solid var(--blue); }
+    .chat-avatar {
+      width:36px; height:36px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.78rem; font-weight:700; color:#fff; flex-shrink:0;
+    }
+    .contact-name { font-size:.87rem; font-weight:700; }
+    .contact-preview { font-size:.73rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .contact-time { font-size:.68rem; color:var(--text-muted); flex-shrink:0; }
+    .chat-window { display:flex; flex-direction:column; background:var(--bg-dark); }
+    .chat-window-header {
+      background:var(--bg-card); border-bottom:1px solid var(--border);
+      padding:12px 18px; display:flex; align-items:center; gap:12px; flex-shrink:0;
+    }
+    .chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
+    .chat-msg { display:flex; gap:10px; align-items:flex-end; max-width:75%; }
+    .chat-msg.mine { margin-left:auto; flex-direction:row-reverse; }
+    .chat-bubble {
+      background:var(--bg-elevated); border:1px solid var(--border); border-radius:12px;
+      padding:10px 14px; font-size:.85rem; line-height:1.5;
+    }
+    .chat-msg.mine .chat-bubble { background:var(--blue); border-color:var(--blue); color:#fff; }
+    .chat-time { font-size:.68rem; color:var(--text-muted); margin-top:4px; }
+    .chat-input-row {
+      display:flex; gap:10px; padding:14px 16px; border-top:1px solid var(--border);
+      background:var(--bg-card); flex-shrink:0;
+    }
+    .chat-input {
+      flex:1; padding:10px 14px; background:var(--bg-elevated); border:1px solid var(--border);
+      border-radius:9px; color:var(--text-primary); font-size:.88rem;
+      font-family:'DM Sans',sans-serif; outline:none;
+    }
+    .chat-input:focus { border-color:var(--blue); }
+
+    /* ══ NOTIFICATION PANEL ══ */
+    .notif-panel {
+      position:absolute; top:48px; right:0; width:300px;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-md); box-shadow:var(--shadow-lg);
+      z-index:100; display:none;
+    }
+    .notif-panel.open { display:block; }
+    .notif-panel-header { padding:14px 16px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+    .notif-item { display:flex; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border-subtle); cursor:pointer; }
+    .notif-item:hover { background:var(--bg-elevated); }
+    .notif-item:last-child { border-bottom:none; }
+    .notif-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:.9rem; flex-shrink:0; }
+    .notif-text p     { font-size:.8rem; font-weight:500; margin-bottom:2px; }
+    .notif-text small { font-size:.72rem; color:var(--text-muted); }
+
+    /* ══ STATUS TOGGLE ══ */
+    .status-toggle {
+      display:flex; align-items:center; gap:8px; padding:7px 12px;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:9px; cursor:pointer; font-size:.82rem; font-weight:600;
+    }
+    .status-dot { width:8px; height:8px; border-radius:50%; background:var(--green); flex-shrink:0; }
+    .status-dot.busy { background:var(--amber); }
+
+    /* ══ MODALS ══ */
+    .modal-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:500;
+      display:none; align-items:center; justify-content:center; padding:24px;
+    }
+    .modal-overlay.open { display:flex; }
+    .modal {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-md); padding:28px; width:100%; max-width:480px;
+      box-shadow:var(--shadow-lg);
+    }
+    .modal-header {
+      display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;
+    }
+    .modal-header h3 { font-size:1rem; font-weight:700; }
+    .modal-close {
+      background:var(--bg-elevated); border:1px solid var(--border); border-radius:6px;
+      width:30px; height:30px; display:flex; align-items:center; justify-content:center;
+      cursor:pointer; color:var(--text-secondary); font-size:.85rem;
+    }
+    .modal-close:hover { color:var(--text-primary); }
+
+    /* ══ TOAST — identical to admin.html ══ */
+    .toast-container { position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:10px; }
+    .toast { display:flex; align-items:center; gap:10px; padding:12px 18px; background:var(--bg-elevated); border:1px solid var(--border); border-radius:10px; font-size:.85rem; box-shadow:0 8px 24px rgba(0,0,0,.4); animation:fadeUp .3s ease; min-width:240px; }
+    .toast.success { border-color:rgba(78,201,176,.4); }
+    .toast.error   { border-color:rgba(248,81,73,.4); }
+    .toast.info    { border-color:rgba(0,122,204,.4); }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ══ PAGE visibility ══ */
+    .page { display:none; }
+    .page.active { display:block; }
+
+    /* ══ RESPONSIVE ══ */
+    @media(max-width:1100px) { .stats-row { grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:900px) {
+      .admin-main { margin-left:0; padding:16px; }
+      .sidebar {
+        left:-260px; transition:left .3s; width:260px;
+      }
+      .sidebar.open { left:0; }
+      .admin-grid { grid-template-columns:1fr; }
+      .chat-layout { grid-template-columns:1fr; height:auto; }
+      .chat-list { display:none; }
+      .portfolio-grid { grid-template-columns:repeat(3,1fr); }
+    }
+    @media(max-width:600px) {
+      .stats-row { grid-template-columns:1fr 1fr; }
+      .mob-menu-btn { display:flex !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<aside class="sidebar" id="main-sidebar">
+  <!-- Brand -->
+  <div class="sidebar-brand">
+    <div class="logo-icon">🔧</div>
+    <span>FundiConnect</span>
+  </div>
+
+  <!-- User info -->
+  <div class="sidebar-user">
+    <div class="sidebar-avatar" id="sidebar-avatar">
+      JK
+      <div class="status-ring" id="status-ring"></div>
+    </div>
+    <div class="sidebar-user-info">
+      <strong>John Kamau</strong>
+      <small>⚡ Electrician · 🥇 Elite</small>
+      <small style="color:var(--green)" id="status-label-side">● Online</small>
+    </div>
+  </div>
+
+  <div class="sidebar-label">Main</div>
+  <ul class="sidebar-nav">
+    <li><a href="#" class="active" onclick="navigate('home',this)"><span class="icon">🏠</span> Dashboard</a></li>
+    <li>
+      <a href="#" onclick="navigate('jobs',this)">
+        <span class="icon">📋</span> Job Requests
+        <span class="nav-badge-pill">3</span>
+      </a>
+    </li>
+    <li><a href="#" onclick="navigate('earnings',this)"><span class="icon">💰</span> Earnings</a></li>
+  </ul>
+
+  <div class="sidebar-label">Schedule</div>
+  <ul class="sidebar-nav">
+    <li><a href="#" onclick="navigate('calendar',this)"><span class="icon">📅</span> Availability</a></li>
+    <li>
+      <a href="#" onclick="navigate('messages',this)">
+        <span class="icon">💬</span> Messages
+        <span class="nav-badge-pill">2</span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="sidebar-label">Account</div>
+  <ul class="sidebar-nav">
+    <li><a href="#" onclick="navigate('profile',this)"><span class="icon">🛠️</span> My Profile</a></li>
+    <li><a href="fundi-profile.html"><span class="icon">👁️</span> Public Profile</a></li>
+    <li><a href="index.html"><span class="icon">🌐</span> View Site</a></li>
+    <li><a href="login.html"><span class="icon">🚪</span> Logout</a></li>
+  </ul>
+
+  <div class="sidebar-footer">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="sidebar-avatar" style="width:32px;height:32px;font-size:.75rem">JK</div>
+      <div>
+        <div style="font-size:.82rem;font-weight:700">John Kamau</div>
+        <div style="font-size:.7rem;color:var(--text-muted)">john@email.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main class="admin-main">
+
+  <!-- Top Bar -->
+  <div class="admin-topbar">
+    <div style="display:flex;align-items:center;gap:14px">
+      <!-- Mobile menu button -->
+      <button class="mob-menu-btn" id="mob-menu-btn"
+        style="display:none;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;width:38px;height:38px;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;color:var(--text-primary)"
+        onclick="document.getElementById('main-sidebar').classList.toggle('open')">☰</button>
+      <div class="topbar-title">
+        <h1 id="page-title">Dashboard</h1>
+        <p id="page-sub">Welcome back, John. You have <span style="color:var(--amber);font-weight:700">3 new job requests</span> waiting.</p>
+      </div>
+    </div>
+
+    <div class="topbar-actions" style="position:relative">
+      <!-- Status toggle -->
+      <div class="status-toggle" onclick="toggleStatus(this)" id="status-toggle">
+        <div class="status-dot" id="status-dot"></div>
+        <span id="status-label">Online</span>
+        <span style="font-size:.72rem;color:var(--text-muted)">(change)</span>
+      </div>
+      <!-- Notifications -->
+      <div class="notif-btn" id="notif-btn">
+        🔔 <div class="notif-dot"></div>
+      </div>
+      <!-- Notification panel -->
+      <div class="notif-panel" id="notif-panel">
+        <div class="notif-panel-header">
+          <strong style="font-size:.85rem">Notifications</strong>
+          <a href="#" style="font-size:.78rem;color:var(--blue-light)">Mark all read</a>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon" style="background:rgba(0,122,204,.15)">📋</div>
+          <div class="notif-text"><p>New job request from Grace Wanjiku</p><small>Full House Wiring · 5 min ago</small></div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon" style="background:rgba(78,201,176,.15)">💰</div>
+          <div class="notif-text"><p>Payment released — Ksh 4,800</p><small>Solar Panel job · 2 hr ago</small></div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon" style="background:rgba(227,179,65,.15)">⭐</div>
+          <div class="notif-text"><p>New 5-star review from Brian Mutua</p><small>"Very professional work" · Yesterday</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: HOME ══════ -->
+  <div class="page active" id="page-home">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card" style="--accent-color:var(--green)">
+        <div class="stat-icon">💰</div>
+        <div class="stat-value" style="color:var(--green)">24,800</div>
+        <div class="stat-label">Earnings This Month (Ksh)</div>
+        <div class="stat-trend trend-up">↑ 18% vs last month</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--blue)">
+        <div class="stat-icon">📋</div>
+        <div class="stat-value" style="color:var(--blue-light)">246</div>
+        <div class="stat-label">Total Jobs Completed</div>
+        <div class="stat-trend trend-up">↑ 8 this month</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--amber)">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-value" style="color:var(--amber)">4.9</div>
+        <div class="stat-label">Average Rating</div>
+        <div class="stat-trend trend-neutral">128 total reviews</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--purple)">
+        <div class="stat-icon">⏱️</div>
+        <div class="stat-value">94%</div>
+        <div class="stat-label">Acceptance Rate</div>
+        <div class="stat-trend trend-up" style="color:var(--green)">Above average</div>
+      </div>
+    </div>
+
+    <div class="admin-grid">
+
+      <!-- Rank Card -->
+      <div class="admin-panel">
+        <div class="panel-header">
+          <h3>🥇 Elite Fundi Status</h3>
+          <a href="#" onclick="navigate('profile',null)" style="font-size:.8rem;color:var(--blue-light)">View profile →</a>
+        </div>
+        <div class="panel-body">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+            <div style="font-size:3rem">🥇</div>
+            <div>
+              <div style="font-weight:800;font-size:1.05rem">Elite Fundi</div>
+              <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">Top 5% on FundiConnect</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px;display:flex;justify-content:space-between;font-size:.82rem">
+            <span style="font-weight:600">Progress to Legend</span>
+            <span style="color:var(--text-muted)">246 / 300 jobs</span>
+          </div>
+          <div class="rank-bar-bg">
+            <div class="rank-bar-fill" style="width:82%"></div>
+          </div>
+          <div style="font-size:.75rem;color:var(--text-muted);margin-top:8px">
+            54 more jobs to unlock <strong style="color:var(--blue-light)">Legend status 🏆</strong>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+            <span class="status status-active">✅ ID Verified</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:100px;background:rgba(227,179,65,.15);color:var(--amber)">🥇 Elite Badge</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:100px;background:rgba(0,122,204,.15);color:var(--blue-light)">⚡ Top Electrician</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Earnings -->
+      <div class="admin-panel">
+        <div class="panel-header">
+          <h3>💰 Earnings Overview</h3>
+          <a href="#" onclick="navigate('earnings',null)" style="font-size:.8rem;color:var(--blue-light)">Details →</a>
+        </div>
+        <div class="panel-body">
+          <div style="margin-bottom:20px">
+            <div style="font-size:.78rem;color:var(--text-muted);margin-bottom:4px">Available Balance</div>
+            <div class="balance-val" style="font-size:2rem">Ksh 18,400</div>
+            <div style="font-size:.78rem;color:var(--text-muted);margin-top:4px">+ Ksh 6,400 in escrow</div>
+          </div>
+          <button class="act act-green" style="width:100%;padding:10px;justify-content:center;border-radius:9px;font-size:.88rem"
+            onclick="document.getElementById('withdraw-modal').classList.add('open')">
+            💳 Withdraw to M-Pesa
+          </button>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+              <div style="font-size:1.1rem;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--green)">24.8k</div>
+              <div style="font-size:.72rem;color:var(--text-muted)">This Month</div>
+            </div>
+            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+              <div style="font-size:1.1rem;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--blue-light)">142.6k</div>
+              <div style="font-size:.72rem;color:var(--text-muted)">All Time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Job Requests Preview -->
+    <div class="admin-panel panel-full" style="margin-bottom:24px">
+      <div class="panel-header">
+        <h3>📋 New Job Requests <span style="font-size:.8rem;color:var(--text-muted);font-weight:400;margin-left:6px">3 pending</span></h3>
+        <a href="#" onclick="navigate('jobs',null)" style="font-size:.8rem;color:var(--blue-light)">View all →</a>
+      </div>
+      <div class="panel-body" style="display:flex;flex-direction:column;gap:0">
+
+        <!-- Job 1 -->
+        <div class="job-card" style="margin-bottom:0;border:none;border-bottom:1px solid var(--border);border-radius:0;padding:18px 0">
+          <div class="job-icon">⚡</div>
+          <div class="job-body">
+            <div class="job-title">Full House Wiring — New 3-Bedroom</div>
+            <div class="job-meta">
+              <span>👤 Grace Wanjiku</span>
+              <span>📍 Ruaka, Kiambu</span>
+              <span>📅 May 10, 9:00 AM</span>
+              <span class="status status-new">New Request</span>
+            </div>
+            <div class="job-desc">New construction, needs full wiring for 3 bedrooms, 2 bathrooms, living area.</div>
+            <div class="action-btns">
+              <button class="act act-approve" data-accept-job onclick="showToast('Job accepted! Grace has been notified 🎉','success')">✅ Accept</button>
+              <button class="act act-reject" data-reject-job onclick="showToast('Job declined','info')">Decline</button>
+              <button class="act act-view" data-modal-open="quote-modal" onclick="document.getElementById('quote-modal').classList.add('open')">💬 Send Quote</button>
+            </div>
+          </div>
+          <div class="job-amount">~Ksh 6,000</div>
+        </div>
+
+        <!-- Job 2 -->
+        <div class="job-card" style="margin-bottom:0;border:none;border-bottom:1px solid var(--border);border-radius:0;padding:18px 0">
+          <div class="job-icon">🔌</div>
+          <div class="job-body">
+            <div class="job-title">CCTV Installation — 4 Cameras</div>
+            <div class="job-meta">
+              <span>👤 Brian Mwangi</span>
+              <span>📍 Westlands</span>
+              <span>📅 May 12, 10:00 AM</span>
+              <span class="status status-new">New Request</span>
+            </div>
+            <div class="job-desc">4-camera CCTV system for a small office. Customer has already purchased the cameras.</div>
+            <div class="action-btns">
+              <button class="act act-approve" data-accept-job onclick="showToast('Job accepted! Brian has been notified 🎉','success')">✅ Accept</button>
+              <button class="act act-reject" data-reject-job onclick="showToast('Job declined','info')">Decline</button>
+              <button class="act act-view" onclick="document.getElementById('quote-modal').classList.add('open')">💬 Send Quote</button>
+            </div>
+          </div>
+          <div class="job-amount">~Ksh 2,400</div>
+        </div>
+
+        <!-- Job 3 -->
+        <div class="job-card" style="margin-bottom:0;border:none;border-radius:0;padding:18px 0">
+          <div class="job-icon">💡</div>
+          <div class="job-body">
+            <div class="job-title">Outdoor Lighting Setup</div>
+            <div class="job-meta">
+              <span>👤 Fatuma Hassan</span>
+              <span>📍 South B</span>
+              <span>📅 May 15</span>
+              <span class="status status-new">New Request</span>
+            </div>
+            <div class="job-desc">Garden + driveway security lights for a compound.</div>
+            <div class="action-btns">
+              <button class="act act-approve" data-accept-job onclick="showToast('Job accepted! Fatuma has been notified 🎉','success')">✅ Accept</button>
+              <button class="act act-reject" data-reject-job onclick="showToast('Job declined','info')">Decline</button>
+              <button class="act act-view" onclick="document.getElementById('quote-modal').classList.add('open')">💬 Send Quote</button>
+            </div>
+          </div>
+          <div class="job-amount">~Ksh 1,200</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /home -->
+
+  <!-- ══════ PAGE: JOBS ══════ -->
+  <div class="page" id="page-jobs">
+
+    <div class="tab-row">
+      <button class="tab-btn active" data-tab="new-jobs">📋 New (3)</button>
+      <button class="tab-btn" data-tab="active-jobs">⚡ Active (1)</button>
+      <button class="tab-btn" data-tab="history-jobs">📂 History</button>
+    </div>
+
+    <!-- New jobs -->
+    <div class="tab-pane active" data-tab-pane="new-jobs">
+      <div class="admin-panel">
+        <div class="panel-header"><h3>Incoming Requests</h3><span style="font-size:.8rem;color:var(--text-muted)">3 pending your response</span></div>
+        <div class="panel-body" style="display:flex;flex-direction:column;gap:12px">
+
+          <div class="job-card" style="margin-bottom:0">
+            <div class="job-icon">⚡</div>
+            <div class="job-body">
+              <div class="job-title">Full House Wiring</div>
+              <div class="job-meta"><span>👤 Grace Wanjiku</span><span>📍 Ruaka</span><span>📅 May 10</span><span class="status status-pending">Pending</span></div>
+              <div class="job-desc">New 3-bed construction. Full wiring needed.</div>
+              <div class="action-btns">
+                <button class="act act-approve" data-accept-job onclick="showToast('Job accepted! 🎉','success')">✅ Accept</button>
+                <button class="act act-reject" data-reject-job onclick="showToast('Job declined','info')">Decline</button>
+                <button class="act act-view" onclick="document.getElementById('quote-modal').classList.add('open')">💬 Quote</button>
+              </div>
+            </div>
+            <div class="job-amount">~Ksh 6,000</div>
+          </div>
+
+          <div class="job-card" style="margin-bottom:0">
+            <div class="job-icon">🔌</div>
+            <div class="job-body">
+              <div class="job-title">CCTV Installation</div>
+              <div class="job-meta"><span>👤 Brian Mwangi</span><span>📍 Westlands</span><span>📅 May 12</span><span class="status status-pending">Pending</span></div>
+              <div class="job-desc">4-camera office system. Client has hardware.</div>
+              <div class="action-btns">
+                <button class="act act-approve" data-accept-job onclick="showToast('Job accepted! 🎉','success')">✅ Accept</button>
+                <button class="act act-reject" data-reject-job onclick="showToast('Job declined','info')">Decline</button>
+                <button class="act act-view" onclick="document.getElementById('quote-modal').classList.add('open')">💬 Quote</button>
+              </div>
+            </div>
+            <div class="job-amount">~Ksh 2,400</div>
+          </div>
+
+          <div class="job-card" style="margin-bottom:0">
+            <div class="job-icon">💡</div>
+            <div class="job-body">
+              <div class="job-title">Outdoor Lighting Setup</div>
+              <div class="job-meta"><span>👤 Fatuma Hassan</span><span>📍 South B</span><span>📅 May 15</span><span class="status status-pending">Pending</span></div>
+              <div class="job-desc">Garden + driveway security lights.</div>
+              <div class="action-btns">
+                <button class="act act-approve" data-accept-job onclick="showToast('Job accepted! 🎉','success')">✅ Accept</button>
+                <button class="act act-reject" data-reject-job onclick="showToast('Job declined','info')">Decline</button>
+                <button class="act act-view" onclick="document.getElementById('quote-modal').classList.add('open')">💬 Quote</button>
+              </div>
+            </div>
+            <div class="job-amount">~Ksh 1,200</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active jobs -->
+    <div class="tab-pane" data-tab-pane="active-jobs">
+      <div class="admin-panel">
+        <div class="panel-header"><h3>Currently Active</h3></div>
+        <div class="panel-body">
+          <div class="job-card active-job" style="margin-bottom:0">
+            <div class="job-icon green">⚡</div>
+            <div class="job-body">
+              <div class="job-title">Wiring — Amina Guyo's Apartment</div>
+              <div class="job-meta"><span>👤 Amina Guyo</span><span>📍 Kilimani</span><span>📅 Today, 10:00 AM</span><span class="status status-active">In Progress</span></div>
+              <div class="job-desc">Full apartment wiring. Currently on-site.</div>
+              <div class="action-btns">
+                <button class="act act-approve" data-complete-job onclick="showToast('Job marked complete! Payment releasing 💰','success')">✅ Mark Complete</button>
+                <button class="act act-view" onclick="document.getElementById('proof-modal').classList.add('open')">📷 Upload Proof</button>
+              </div>
+            </div>
+            <div class="job-amount">Ksh 800/hr</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="tab-pane" data-tab-pane="history-jobs">
+      <div class="admin-panel">
+        <div class="panel-header"><h3>Completed Jobs</h3></div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr><th>Job</th><th>Client</th><th>Date</th><th>Rating</th><th>Earned</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div style="font-size:.85rem;font-weight:600">☀️ Solar Panel Installation</div></td>
+                <td style="font-size:.83rem">Brian Mutua</td>
+                <td style="font-size:.78rem;color:var(--text-muted)">Apr 22</td>
+                <td style="font-size:.85rem">⭐ 5.0</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:.83rem;color:var(--green)">Ksh 4,800</td>
+                <td><span class="status status-completed">Completed</span></td>
+              </tr>
+              <tr>
+                <td><div style="font-size:.85rem;font-weight:600">📷 CCTV — Home Setup</div></td>
+                <td style="font-size:.83rem">James Ochieng</td>
+                <td style="font-size:.78rem;color:var(--text-muted)">Apr 18</td>
+                <td style="font-size:.85rem">⭐ 4.8</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:.83rem;color:var(--green)">Ksh 1,600</td>
+                <td><span class="status status-completed">Completed</span></td>
+              </tr>
+              <tr>
+                <td><div style="font-size:.85rem;font-weight:600">🔌 DB Box Installation</div></td>
+                <td style="font-size:.83rem">Mary Akinyi</td>
+                <td style="font-size:.78rem;color:var(--text-muted)">Apr 12</td>
+                <td style="font-size:.85rem">⭐ 5.0</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:.83rem;color:var(--green)">Ksh 2,200</td>
+                <td><span class="status status-completed">Completed</span></td>
+              </tr>
+              <tr>
+                <td><div style="font-size:.85rem;font-weight:600">⚡ Office Rewiring</div></td>
+                <td style="font-size:.83rem">David Kamau</td>
+                <td style="font-size:.78rem;color:var(--text-muted)">Apr 5</td>
+                <td style="font-size:.85rem">⭐ 4.9</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:.83rem;color:var(--green)">Ksh 7,200</td>
+                <td><span class="status status-completed">Completed</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /jobs -->
+
+  <!-- ══════ PAGE: EARNINGS ══════ -->
+  <div class="page" id="page-earnings">
+
+    <!-- Withdraw band -->
+    <div class="withdraw-band">
+      <div>
+        <div style="font-size:.82rem;color:var(--text-muted);margin-bottom:4px">Available Balance</div>
+        <div class="balance-val">Ksh 18,400</div>
+        <div style="font-size:.78rem;color:var(--text-muted);margin-top:4px">Ksh 6,400 in escrow (pending job)</div>
+      </div>
+      <button class="act act-primary" style="padding:12px 24px;font-size:.9rem;border-radius:10px"
+        onclick="document.getElementById('withdraw-modal').classList.add('open')">
+        💳 Withdraw to M-Pesa
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px">
+      <div class="stat-card" style="--accent-color:var(--green)">
+        <div class="stat-icon">📅</div>
+        <div class="stat-value" style="color:var(--green);font-size:1.5rem">24,800</div>
+        <div class="stat-label">This Month (Ksh)</div>
+        <div class="stat-trend trend-up">↑ 18% vs last</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--blue)">
+        <div class="stat-icon">📊</div>
+        <div class="stat-value" style="color:var(--blue-light);font-size:1.5rem">142,600</div>
+        <div class="stat-label">All Time (Ksh)</div>
+        <div class="stat-trend trend-neutral">Since Jan 2025</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--amber)">
+        <div class="stat-icon">📋</div>
+        <div class="stat-value" style="color:var(--amber);font-size:1.5rem">8</div>
+        <div class="stat-label">Jobs This Month</div>
+        <div class="stat-trend trend-up">↑ 2 more than last</div>
+      </div>
+    </div>
+
+    <div class="admin-grid">
+      <!-- Earnings Chart -->
+      <div class="admin-panel">
+        <div class="panel-header">
+          <h3>📈 Monthly Earnings (Ksh)</h3>
+          <span style="font-size:.75rem;color:var(--text-muted)">Last 7 months</span>
+        </div>
+        <div class="panel-body">
+          <div class="chart-bar-wrap" id="earnings-chart"></div>
+          <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-muted);margin-top:8px" id="earnings-labels"></div>
+        </div>
+      </div>
+
+      <!-- Payout History -->
+      <div class="admin-panel">
+        <div class="panel-header"><h3>💸 Recent Payouts</h3></div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead><tr><th>Date</th><th>To</th><th>Amount</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="font-size:.78rem;color:var(--text-muted)">May 1, 2025</td>
+                <td style="font-size:.8rem">0712 345 678</td>
+                <td style="font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:700">+Ksh 15,000</td>
+              </tr>
+              <tr>
+                <td style="font-size:.78rem;color:var(--text-muted)">Apr 1, 2025</td>
+                <td style="font-size:.8rem">0712 345 678</td>
+                <td style="font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:700">+Ksh 21,200</td>
+              </tr>
+              <tr>
+                <td style="font-size:.78rem;color:var(--text-muted)">Mar 1, 2025</td>
+                <td style="font-size:.8rem">0712 345 678</td>
+                <td style="font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:700">+Ksh 18,600</td>
+              </tr>
+              <tr>
+                <td style="font-size:.78rem;color:var(--text-muted)">Feb 1, 2025</td>
+                <td style="font-size:.8rem">0712 345 678</td>
+                <td style="font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:700">+Ksh 16,800</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div><!-- /earnings -->
+
+  <!-- ══════ PAGE: CALENDAR ══════ -->
+  <div class="page" id="page-calendar">
+
+    <div class="admin-grid">
+
+      <!-- Calendar -->
+      <div class="admin-panel">
+        <div class="panel-header">
+          <h3>📅 May 2025</h3>
+          <div style="display:flex;gap:6px">
+            <button class="act act-view" style="padding:5px 10px" onclick="showToast('Prev month coming soon','info')">←</button>
+            <button class="act act-view" style="padding:5px 10px" onclick="showToast('Next month coming soon','info')">→</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="cal-grid">
+            <div class="cal-header">Sun</div><div class="cal-header">Mon</div>
+            <div class="cal-header">Tue</div><div class="cal-header">Wed</div>
+            <div class="cal-header">Thu</div><div class="cal-header">Fri</div>
+            <div class="cal-header">Sat</div>
+            <!-- Week 1 -->
+            <div class="cal-day empty"></div><div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day available" onclick="toggleDay(this)">1</div>
+            <div class="cal-day available" onclick="toggleDay(this)">2</div>
+            <div class="cal-day available" onclick="toggleDay(this)">3</div>
+            <div class="cal-day busy"      onclick="toggleDay(this)">4</div>
+            <!-- Week 2 -->
+            <div class="cal-day busy"      onclick="toggleDay(this)">5</div>
+            <div class="cal-day available" onclick="toggleDay(this)">6</div>
+            <div class="cal-day available" onclick="toggleDay(this)">7</div>
+            <div class="cal-day today"     onclick="toggleDay(this)">8</div>
+            <div class="cal-day available" onclick="toggleDay(this)">9</div>
+            <div class="cal-day available" onclick="toggleDay(this)">10</div>
+            <div class="cal-day busy"      onclick="toggleDay(this)">11</div>
+            <!-- Week 3 -->
+            <div class="cal-day"           onclick="toggleDay(this)">12</div>
+            <div class="cal-day available" onclick="toggleDay(this)">13</div>
+            <div class="cal-day available" onclick="toggleDay(this)">14</div>
+            <div class="cal-day"           onclick="toggleDay(this)">15</div>
+            <div class="cal-day available" onclick="toggleDay(this)">16</div>
+            <div class="cal-day available" onclick="toggleDay(this)">17</div>
+            <div class="cal-day"           onclick="toggleDay(this)">18</div>
+            <!-- Week 4 -->
+            <div class="cal-day"           onclick="toggleDay(this)">19</div>
+            <div class="cal-day available" onclick="toggleDay(this)">20</div>
+            <div class="cal-day available" onclick="toggleDay(this)">21</div>
+            <div class="cal-day available" onclick="toggleDay(this)">22</div>
+            <div class="cal-day available" onclick="toggleDay(this)">23</div>
+            <div class="cal-day available" onclick="toggleDay(this)">24</div>
+            <div class="cal-day"           onclick="toggleDay(this)">25</div>
+            <!-- Week 5 -->
+            <div class="cal-day"           onclick="toggleDay(this)">26</div>
+            <div class="cal-day available" onclick="toggleDay(this)">27</div>
+            <div class="cal-day available" onclick="toggleDay(this)">28</div>
+            <div class="cal-day available" onclick="toggleDay(this)">29</div>
+            <div class="cal-day available" onclick="toggleDay(this)">30</div>
+            <div class="cal-day available" onclick="toggleDay(this)">31</div>
+            <div class="cal-day empty"></div>
+          </div>
+
+          <!-- Legend -->
+          <div style="display:flex;gap:16px;font-size:.78rem;margin-top:4px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;border-radius:3px;background:rgba(78,201,176,.2);border:1px solid rgba(78,201,176,.4)"></div> Available</div>
+            <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;border-radius:3px;background:rgba(248,81,73,.15);border:1px solid rgba(248,81,73,.3)"></div> Busy/Booked</div>
+            <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;border-radius:3px;background:var(--bg-elevated);border:1px solid var(--border)"></div> Not set</div>
+          </div>
+          <p style="font-size:.75rem;color:var(--text-muted);margin-top:10px">Click any day to toggle availability.</p>
+        </div>
+      </div>
+
+      <!-- Working Hours -->
+      <div class="admin-panel">
+        <div class="panel-header"><h3>⏰ Default Working Hours</h3></div>
+        <div class="panel-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+            <div class="form-group">
+              <label class="form-label">Start Time</label>
+              <select class="form-input"><option>7:00 AM</option><option selected>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">End Time</label>
+              <select class="form-input"><option>4:00 PM</option><option>5:00 PM</option><option selected>6:00 PM</option><option>7:00 PM</option></select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Available Days</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+              <label style="display:flex;align-items:center;gap:5px;font-size:.84rem;cursor:pointer"><input type="checkbox" style="accent-color:var(--blue)"> Sun</label>
+              <label style="display:flex;align-items:center;gap:5px;font-size:.84rem;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Mon</label>
+              <label style="display:flex;align-items:center;gap:5px;font-size:.84rem;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Tue</label>
+              <label style="display:flex;align-items:center;gap:5px;font-size:.84rem;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Wed</label>
+              <label style="display:flex;align-items:center;gap:5px;font-size:.84rem;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Thu</label>
+              <label style="display:flex;align-items:center;gap:5px;font-size:.84rem;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Fri</label>
+              <label style="display:flex;align-items:center;gap:5px;font-size:.84rem;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Sat</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Emergency Jobs</label>
+            <select class="form-input">
+              <option selected>Accept emergency requests</option>
+              <option>Do not disturb</option>
+            </select>
+          </div>
+
+          <button class="act act-primary" style="width:100%;padding:11px;border-radius:9px;font-size:.9rem;justify-content:center"
+            onclick="showToast('Availability schedule saved ✅','success')">
+            Save Schedule
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /calendar -->
+
+  <!-- ══════ PAGE: PROFILE ══════ -->
+  <div class="page" id="page-profile">
+
+    <div class="admin-grid">
+
+      <!-- Basic Info -->
+      <div class="admin-panel panel-full">
+        <div class="panel-header">
+          <h3>🛠️ Basic Information</h3>
+          <span class="status status-active">✅ Verified</span>
+        </div>
+        <div class="panel-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" value="John Kamau"/></div>
+            <div class="form-group"><label class="form-label">Phone</label><input class="form-input" value="0712 345 678"/></div>
+            <div class="form-group">
+              <label class="form-label">Primary Skill</label>
+              <select class="form-input"><option selected>Electrician</option><option>Plumber</option><option>Carpenter</option><option>Painter</option></select>
+            </div>
+            <div class="form-group"><label class="form-label">Hourly Rate (Ksh)</label><input class="form-input" type="number" value="800"/></div>
+            <div class="form-group">
+              <label class="form-label">County</label>
+              <select class="form-input"><option selected>Nairobi</option><option>Mombasa</option><option>Kisumu</option></select>
+            </div>
+            <div class="form-group"><label class="form-label">Area / Estate</label><input class="form-input" value="Westlands"/></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Bio</label>
+            <textarea class="form-input" rows="3">I'm a certified electrician with over 7 years of experience working across residential and commercial properties in Nairobi.</textarea>
+          </div>
+          <button class="act act-primary" style="padding:11px 28px;border-radius:9px;font-size:.9rem"
+            onclick="showToast('Profile updated! ✅','success')">Save Changes</button>
+        </div>
+      </div>
+
+      <!-- Portfolio -->
+      <div class="admin-panel panel-full">
+        <div class="panel-header">
+          <h3>📸 Work Portfolio</h3>
+          <button class="act act-view" onclick="showToast('Photo upload coming soon','info')">+ Add Photo</button>
+        </div>
+        <div class="panel-body">
+          <p style="font-size:.83rem;color:var(--text-muted);margin-bottom:0">Photos of your work help clients choose you. Add at least 3 portfolio images.</p>
+          <div class="portfolio-grid">
+            <div class="portfolio-item">⚡</div>
+            <div class="portfolio-item">☀️</div>
+            <div class="portfolio-item">📷</div>
+            <div class="portfolio-item">💡</div>
+            <div class="portfolio-item">🔌</div>
+            <div class="portfolio-item">🔧</div>
+            <div class="portfolio-item add" onclick="showToast('Photo upload coming soon','info')">+</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /profile -->
+
+  <!-- ══════ PAGE: MESSAGES ══════ -->
+  <div class="page" id="page-messages">
+    <div class="admin-panel panel-full" style="margin-bottom:0">
+      <div class="panel-header"><h3>💬 Messages</h3><span style="font-size:.8rem;color:var(--text-muted)">2 unread</span></div>
+    </div>
+    <div class="chat-layout">
+
+      <!-- Contact list -->
+      <div class="chat-list">
+        <div class="chat-contact active">
+          <div class="chat-avatar" style="background:linear-gradient(135deg,#8B5CF6,#EC4899)">AG</div>
+          <div style="flex:1;min-width:0">
+            <div class="contact-name">Amina Guyo</div>
+            <div class="contact-preview">Sawa sana. Niko nyumbani.</div>
+          </div>
+          <div class="contact-time">10:35</div>
+        </div>
+        <div class="chat-contact" onclick="showToast('Brian Mwangi conversation loaded','info')">
+          <div class="chat-avatar" style="background:linear-gradient(135deg,#10B981,#06B6D4)">BM</div>
+          <div style="flex:1;min-width:0">
+            <div class="contact-name">Brian Mwangi</div>
+            <div class="contact-preview">When are you available?</div>
+          </div>
+          <div class="contact-time">9:20</div>
+        </div>
+        <div class="chat-contact" onclick="showToast('Grace Wanjiku conversation loaded','info')">
+          <div class="chat-avatar" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">GW</div>
+          <div style="flex:1;min-width:0">
+            <div class="contact-name">Grace Wanjiku</div>
+            <div class="contact-preview">About the wiring job…</div>
+          </div>
+          <div class="contact-time">Yesterday</div>
+        </div>
+      </div>
+
+      <!-- Chat window -->
+      <div class="chat-window">
+        <div class="chat-window-header">
+          <div class="chat-avatar" style="background:linear-gradient(135deg,#8B5CF6,#EC4899);width:34px;height:34px;font-size:.75rem">AG</div>
+          <div>
+            <div style="font-weight:700;font-size:.9rem">Amina Guyo</div>
+            <div style="font-size:.72rem;color:var(--green)">Client · Active booking</div>
+          </div>
+        </div>
+        <div class="chat-messages">
+          <div class="chat-msg mine">
+            <div>
+              <div class="chat-bubble">Habari Amina! Nitafika kama tuliamua saa tatu asubuhi.</div>
+              <div class="chat-time">10:32 AM</div>
+            </div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar" style="background:linear-gradient(135deg,#8B5CF6,#EC4899);width:28px;height:28px;font-size:.7rem;flex-shrink:0">AG</div>
+            <div>
+              <div class="chat-bubble">Sawa sana. Niko nyumbani.</div>
+              <div class="chat-time">10:35 AM</div>
+            </div>
+          </div>
+          <div class="chat-msg mine">
+            <div>
+              <div class="chat-bubble">Sawa, nitakuja na vifaa vyote. Materials tayari.</div>
+              <div class="chat-time">10:36 AM</div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input class="chat-input" type="text" placeholder="Type a message…" id="chat-input-box"/>
+          <button class="act act-primary" style="padding:10px 18px;border-radius:9px" id="chat-send-btn">Send</button>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /messages -->
+
+</main><!-- /admin-main -->
+
+<!-- ══════════ MODALS ══════════ -->
+
+<!-- Quote Modal -->
+<div class="modal-overlay" id="quote-modal" onclick="closeModal(event,'quote-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>💬 Send a Quote</h3>
+      <button class="modal-close" onclick="document.getElementById('quote-modal').classList.remove('open')">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Your Price (Ksh)</label><input class="form-input" type="number" placeholder="e.g. 5,500"/></div>
+    <div class="form-group">
+      <label class="form-label">Estimated Duration</label>
+      <select class="form-input"><option>1–2 hours</option><option>Half day</option><option>Full day</option><option>2–3 days</option></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Message to Client</label>
+      <textarea class="form-input" placeholder="Describe what's included in your quote…" rows="3"></textarea>
+    </div>
+    <button class="act act-primary" style="width:100%;padding:12px;border-radius:9px;font-size:.9rem"
+      onclick="showToast('Quote sent! Client will respond shortly 📨','success');document.getElementById('quote-modal').classList.remove('open')">
+      Send Quote
+    </button>
+  </div>
+</div>
+
+<!-- Proof Modal -->
+<div class="modal-overlay" id="proof-modal" onclick="closeModal(event,'proof-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>📷 Upload Job Proof</h3>
+      <button class="modal-close" onclick="document.getElementById('proof-modal').classList.remove('open')">✕</button>
+    </div>
+    <p style="font-size:.88rem;color:var(--text-secondary);margin-bottom:16px">Upload before and after photos. This protects both you and the client.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div>
+        <label class="form-label">Before Photo</label>
+        <div class="upload-zone" onclick="showToast('Photo upload (demo)','info')">
+          <div style="font-size:2rem;margin-bottom:6px">📸</div>
+          <p style="font-size:.82rem">Before work</p>
+        </div>
+      </div>
+      <div>
+        <label class="form-label">After Photo</label>
+        <div class="upload-zone" onclick="showToast('Photo upload (demo)','info')">
+          <div style="font-size:2rem;margin-bottom:6px">✅</div>
+          <p style="font-size:.82rem">After work</p>
+        </div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Notes (optional)</label><textarea class="form-input" placeholder="Any comments about the job…" rows="2"></textarea></div>
+    <button class="act act-primary" style="width:100%;padding:12px;border-radius:9px;font-size:.9rem"
+      onclick="showToast('Proof uploaded! Job marked complete 🎉','success');document.getElementById('proof-modal').classList.remove('open')">
+      Submit & Complete Job
+    </button>
+  </div>
+</div>
+
+<!-- Withdraw Modal -->
+<div class="modal-overlay" id="withdraw-modal" onclick="closeModal(event,'withdraw-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>💳 Withdraw to M-Pesa</h3>
+      <button class="modal-close" onclick="document.getElementById('withdraw-modal').classList.remove('open')">✕</button>
+    </div>
+    <div style="background:rgba(78,201,176,.08);border:1px solid rgba(78,201,176,.25);border-radius:10px;padding:14px 18px;margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:.85rem;color:var(--text-muted)">Available Balance</span>
+        <strong style="color:var(--green);font-size:1.1rem;font-family:'JetBrains Mono',monospace">Ksh 18,400</strong>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">M-Pesa Number</label><input class="form-input" value="0712 345 678"/></div>
+    <div class="form-group"><label class="form-label">Amount (Ksh)</label><input class="form-input" type="number" placeholder="Min. Ksh 100" value="18400"/></div>
+    <button class="act act-approve" style="width:100%;padding:12px;border-radius:9px;font-size:.9rem;margin-top:4px"
+      onclick="showToast('Withdrawal of Ksh 18,400 initiated to 0712 345 678 ✅','success');document.getElementById('withdraw-modal').classList.remove('open')">
+      💸 Withdraw Now
+    </button>
+    <p style="font-size:.75rem;color:var(--text-muted);text-align:center;margin-top:10px">Processed within 5 minutes. Standard M-Pesa charges apply.</p>
+  </div>
+</div>
+
+<div class="toast-container"></div>
+<script src="js/main.js"></script>
+<script>
+/* ── Page navigation ── */
+function navigate(page, linkEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page)?.classList.add('active');
+  if (linkEl) {
+    document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+    linkEl.classList.add('active');
+  }
+  document.getElementById('main-sidebar')?.classList.remove('open');
+  const titles = {
+    home:'Dashboard', jobs:'Job Requests', earnings:'Earnings',
+    calendar:'Availability', profile:'My Profile', messages:'Messages'
+  };
+  const subs = {
+    home:'Welcome back, John. You have <span style="color:var(--amber);font-weight:700">3 new job requests</span> waiting.',
+    jobs:'Review and respond to your incoming job requests.',
+    earnings:'Track your income, balance, and M-Pesa payouts.',
+    calendar:'Set your available days and working hours.',
+    profile:'Manage your profile, skills, and portfolio.',
+    messages:'Chat with your clients.'
+  };
+  document.getElementById('page-title').textContent = titles[page] || '';
+  document.getElementById('page-sub').innerHTML = subs[page] || '';
+}
+
+/* ── Tab switching ── */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const row = btn.closest('.tab-row');
+    const page = btn.closest('.page');
+    row.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const target = btn.dataset.tab;
+    page.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    page.querySelector(`[data-tab-pane="${target}"]`)?.classList.add('active');
+  });
+});
+
+/* ── Calendar day toggle ── */
+function toggleDay(el) {
+  if (el.classList.contains('today')) return;
+  if (el.classList.contains('available'))     { el.classList.remove('available'); el.classList.add('busy'); }
+  else if (el.classList.contains('busy'))     { el.classList.remove('busy'); }
+  else                                         { el.classList.add('available'); }
+  showToast('Availability updated ✅', 'success');
+}
+
+/* ── Status toggle ── */
+function toggleStatus() {
+  const dot   = document.getElementById('status-dot');
+  const label = document.getElementById('status-label');
+  const sideLabel = document.getElementById('status-label-side');
+  const ring  = document.getElementById('status-ring');
+  if (dot.classList.contains('busy')) {
+    dot.classList.remove('busy');
+    label.textContent = 'Online';
+    sideLabel.textContent = '● Online';
+    sideLabel.style.color = 'var(--green)';
+    ring.classList.remove('busy');
+    showToast('Status set to Online — accepting requests ✅', 'success');
+  } else {
+    dot.classList.add('busy');
+    label.textContent = 'Busy';
+    sideLabel.textContent = '● Busy';
+    sideLabel.style.color = 'var(--amber)';
+    ring.classList.add('busy');
+    showToast('Status set to Busy — no new requests 🔴', 'info');
+  }
+}
+
+/* ── Notifications ── */
+const notifBtn   = document.getElementById('notif-btn');
+const notifPanel = document.getElementById('notif-panel');
+notifBtn?.addEventListener('click', e => { e.stopPropagation(); notifPanel.classList.toggle('open'); });
+document.addEventListener('click', e => {
+  if (!notifPanel?.contains(e.target) && e.target !== notifBtn) notifPanel?.classList.remove('open');
+});
+
+/* ── Modal close on backdrop ── */
+function closeModal(e, id) {
+  if (e.target === e.currentTarget) document.getElementById(id).classList.remove('open');
+}
+
+/* ── Chat ── */
+const chatInput   = document.getElementById('chat-input-box');
+const chatSendBtn = document.getElementById('chat-send-btn');
+const chatMsgs    = document.querySelector('.chat-messages');
+const replies     = ['Asante sana!','Sawa, nitangoja.','Niko nyumbani.','Sawa kabisa!','Nitakupigia simu hivi sasa.'];
+function sendMessage() {
+  const text = chatInput?.value.trim();
+  if (!text) return;
+  const div = document.createElement('div');
+  div.className = 'chat-msg mine';
+  const now = new Date().toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'});
+  div.innerHTML = `<div><div class="chat-bubble">${text}</div><div class="chat-time">${now}</div></div>`;
+  chatMsgs?.appendChild(div);
+  chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  chatInput.value = '';
+  setTimeout(() => {
+    const rep = document.createElement('div');
+    rep.className = 'chat-msg';
+    rep.innerHTML = `<div class="chat-avatar" style="background:linear-gradient(135deg,#8B5CF6,#EC4899);width:28px;height:28px;font-size:.7rem;flex-shrink:0">AG</div><div><div class="chat-bubble">${replies[Math.floor(Math.random()*replies.length)]}</div><div class="chat-time">${new Date().toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'})}</div></div>`;
+    chatMsgs?.appendChild(rep);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  }, 900 + Math.random() * 600);
+}
+chatSendBtn?.addEventListener('click', sendMessage);
+chatInput?.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+
+/* ── Earnings chart ── */
+const chartEl     = document.getElementById('earnings-chart');
+const labelsEl    = document.getElementById('earnings-labels');
+const earningsData  = [14200, 18600, 21200, 16800, 19400, 22100, 24800];
+const earningMonths = ['Nov','Dec','Jan','Feb','Mar','Apr','May'];
+if (chartEl) {
+  const max = Math.max(...earningsData);
+  earningsData.forEach((v, i) => {
+    const col = document.createElement('div');
+    col.className = 'chart-bar-col';
+    const bar = document.createElement('div');
+    bar.className = 'chart-bar' + (i === 6 ? ' highlight' : '');
+    bar.style.height = Math.max(16, (v / max) * 100) + 'px';
+    bar.innerHTML = `<div class="chart-tooltip">Ksh ${v.toLocaleString()}</div>`;
+    col.appendChild(bar);
+    chartEl.appendChild(col);
+  });
+}
+if (labelsEl) {
+  labelsEl.innerHTML = earningMonths.map(m => `<span>${m}</span>`).join('');
+}
+
+/* ── Mobile menu button visibility ── */
+if (window.innerWidth <= 600) {
+  document.getElementById('mob-menu-btn').style.display = 'flex';
+}
+window.addEventListener('resize', () => {
+  const btn = document.getElementById('mob-menu-btn');
+  if (btn) btn.style.display = window.innerWidth <= 600 ? 'flex' : 'none';
+});
+</script>
+</body>
+</html>
